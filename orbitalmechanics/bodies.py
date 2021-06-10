@@ -32,7 +32,7 @@ class CentralBody:
                 the standard gravitational parameter for the body in m^3 s^-2.
                 the value of mu is currently knows to greater precision the G or M for many bodies
                 so specifying the known value in the parameters might improve accuracy.
-            """
+            """ #TODO: Consider shortening __init__ docstring because of double information with class docstring.
         self.mass: float = mass
         self.radius: int = radius
         self.min_viable_orbit_r = radius + lowest_orbit_from_surface
