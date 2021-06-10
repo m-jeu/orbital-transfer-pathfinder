@@ -1,4 +1,14 @@
 import bodies
+import mmath.math
+
+
+class KeplerElementError(Exception):
+    """Exception to help diagnose problems related to not initializing an Orbit object with the proper parameters."""
+    def __init__(self):
+        super.__init__("""Orbit should be initialized with either:
+-semi-major axis and eccentricity as 'a' and 'e' or
+-apogee and perigee as 'apo' and 'per'
+in the keyword argument.""")
 
 
 class Orbit:
@@ -7,30 +17,61 @@ class Orbit:
     Attributes:
         central_body: the body this orbit is around.
         semimajor_axis: the orbit's semimajor axis (a) in m.
-        eccentricity: the orbit's eccentricity (e). 0 means orbit is circular."""
+        eccentricity: the orbit's eccentricity (e). 0 means orbit is circular.
+        apogee: the orbit's apogee in m.
+        perigee: the orbit's perigee in m."""
 
-    def __init__(self,
-                 central_body: bodies.CentralBody,
-                 semimajor_axis: int,
-                 eccentricity: float):
-        """Initialize Orbit with central_body, semimajor_axis, eccentricity."""
+    def __init__(self, central_body: bodies.CentralBody, **kepler_elements):
+        """Initialize instance with central_body, semimajor_axis, eccentricity, apogee and perigee.
+
+        Keyword-arguments kepler_elements may contain:
+            'a': semi-major axis.
+            'e': eccentricity.
+            'apo': apogee.
+            'per': perigee.
+        kepler_elements must contain either 'a' and 'e', or 'apo' and 'per'.
+        Consult Class attribute documentation for full documentation.
+
+        Raises:
+            KeplerElementError: when kepler_elements arguments are not being passed properly.
+        """
         self.central_body = central_body
-        self.sm_axis = semimajor_axis
-        self.eccentricity = eccentricity
+        if "a" in kepler_elements and "e" in kepler_elements:
+            self.sm_axis, self.eccentricity = kepler_elements["a"], kepler_elements["e"]
+            self.apogee, self.perigee = Orbit._apo_and_per(self.sm_axis, self.eccentricity)
+        elif "apo" in kepler_elements and "per" in kepler_elements:
+            self.apogee, self.perigee = kepler_elements["apo"], kepler_elements["per"]
+            self.sm_axis, self.eccentricity = Orbit._a_and_e(self.apogee, self.perigee)
+        else:
+            raise KeplerElementError()
 
-    def _per(self):
-        """Compute the orbit perigee.
+    @staticmethod
+    def _apo_and_per(a: int or float, e: float) -> tuple[float, float]:
+        """Compute an apogee and perigee from semi-major axis and eccentricity.
+
+        Args:
+            a: orbit semi-major axis in m.
+            e: orbit eccentricity.
 
         Returns:
-            Orbit perigee in m."""
-        return self.sm_axis * (1 - self.eccentricity)
+            tuple that contains:
+                0: orbit apogee in m.
+                1: orbit perigee in m."""
+        return a * (1 + e), a * (1 - e)
 
-    def _apo(self):
-        """Compute the orbit apogee.
+    @staticmethod
+    def _a_and_e(apo: int or float, per: int or float) -> tuple[float, float]:
+        """Compute a semi-major axis and eccentricity from apogee and perigee.
+
+        Args:
+            apo: orbit apogee in m.
+            per: orbit perigee in m.
 
         Returns:
-            Orbit apogee in m."""
-        return self.sm_axis * (1 + self.eccentricity)
+            tuple that contains:
+                0: orbit semi-major axis in m.
+                1: orbit eccentricity."""
+        return mmath.math.v_avg(apo, per), 1 - (2 / (apo / per) + 1)
 
     def _v_at(self, r) -> float:
         """Compute the speed relative to the central body at a certain point in the orbit.
@@ -57,9 +98,9 @@ class Orbit:
 
 #Example use
 if __name__ == "__main__":
-    leo = Orbit(bodies.earth, bodies.earth.add_radius(200000), 0)
-    gto = Orbit(bodies.earth, 24367500, 0.730337539)
-    geo = Orbit(bodies.earth, 42164000, 0)
+    leo = Orbit(bodies.earth, a=bodies.earth.add_radius(200000), e=0)
+    gto = Orbit(bodies.earth, a=24367500, e=0.730337539)
+    geo = Orbit(bodies.earth, a=42164000, e=0)
 
     print("200km LEO -> GTO -> GEO costs approx:")
-    print(f"{leo.pro_retro_grade(gto, gto._per()) + gto.pro_retro_grade(geo, gto._apo())} Delta-V.")
+    print(f"{leo.pro_retro_grade(gto, gto.perigee) + gto.pro_retro_grade(geo, gto.apogee)} Delta-V.")
