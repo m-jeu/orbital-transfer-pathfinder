@@ -61,5 +61,5 @@ if __name__ == "__main__":
     gto = Orbit(bodies.earth, 24367500, 0.730337539)
     geo = Orbit(bodies.earth, 42164000, 0)
 
-    print("200km LEO -> GTO -> GEO costs aprox:")
+    print("200km LEO -> GTO -> GEO costs approx:")
     print(f"{leo.pro_retro_grade(gto, gto._per()) + gto.pro_retro_grade(geo, gto._apo())} Delta-V.")
