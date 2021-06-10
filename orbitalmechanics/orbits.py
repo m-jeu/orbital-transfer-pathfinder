@@ -18,8 +18,9 @@ class Orbit:
         central_body: the body this orbit is around.
         semimajor_axis: the orbit's semimajor axis (a) in m.
         eccentricity: the orbit's eccentricity (e). 0 means orbit is circular.
-        apogee: the orbit's apogee in m.
-        perigee: the orbit's perigee in m."""
+        apogee: the orbit's apogee in m. Should be int for transfer-calculations.
+        perigee: the orbit's perigee in m. Should be int for transfer-calculations.
+        apsides: apogee and perigee in 1 set, for convenience."""
 
     def __init__(self, central_body: bodies.CentralBody, **kepler_elements):
         """Initialize instance with central_body, semimajor_axis, eccentricity, apogee and perigee.
@@ -27,8 +28,8 @@ class Orbit:
         Keyword-arguments kepler_elements may contain:
             'a': semi-major axis.
             'e': eccentricity.
-            'apo': apogee.
-            'per': perigee.
+            'apo': apogee as integer.
+            'per': perigee as integer.
         kepler_elements must contain either 'a' and 'e', or 'apo' and 'per'.
         Consult Class attribute documentation for full documentation.
 
@@ -44,6 +45,7 @@ class Orbit:
             self.sm_axis, self.eccentricity = Orbit._a_and_e(self.apogee, self.perigee)
         else:
             raise KeplerElementError()
+        self.apsides: set[int] = {self.apogee, self.perigee}
 
     @staticmethod
     def _apo_and_per(a: int or float, e: float) -> tuple[float, float]:
@@ -57,7 +59,7 @@ class Orbit:
             tuple that contains:
                 0: orbit apogee in m.
                 1: orbit perigee in m."""
-        return a * (1 + e), a * (1 - e)
+        return round(a * (1 + e)), round(a * (1 - e))
 
     @staticmethod
     def _a_and_e(apo: int or float, per: int or float) -> tuple[float, float]:
@@ -95,13 +97,25 @@ class Orbit:
             Negative if manoeuvre requires expending the delta-V in retrograde direction."""
         return target_orbit.v_at(shared_r) - self.v_at(shared_r)
 
+    def evaluate_pro_retro_grade_manouvre(self, target_orbit) -> int or None:
+        """Evaluate whether, and if so at what attitude, a pro- or retrograde manoeuvre is possible
+        to transfer to a certain target orbit.
+
+        Args:
+            target_orbit: the orbit to transfer to.
+
+        Returns:
+            None if manouvre is not possible.
+            The distance from the central body's centre at which it's possible if it's possible."""
+        overlap = self.apsides.intersection(target_orbit.apsides)
+        return None if len(overlap) == 0 else overlap.pop()
+
 
 #Example use
 if __name__ == "__main__":
     leo = Orbit(bodies.earth, a=bodies.earth.add_radius(200000), e=0)
     gto = Orbit(bodies.earth, a=24367500, e=0.730337539)
     geo = Orbit(bodies.earth, a=42164000, e=0)
-    iss = (Orbit(bodies.earth, apo=bodies.earth.add_radius(422000), per=bodies.earth.add_radius(418000)))
 
     print("200km LEO -> GTO -> GEO costs approx:")
     print(f"{leo.pro_retro_grade_manouvre(gto, gto.perigee) + gto.pro_retro_grade_manouvre(geo, gto.apogee)} Delta-V.")
