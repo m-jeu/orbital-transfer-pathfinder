@@ -83,7 +83,7 @@ class Orbit:
             The speed relative to the central body at the specified attitude in m s^-1."""
         return (self.central_body.mu * ((2 / r) - (1 / self.sm_axis))) ** 0.5
 
-    def pro_retro_grade(self, target_orbit, shared_r: float) -> float:
+    def pro_retro_grade_manouvre(self, target_orbit, shared_r: float) -> float:
         """Compute the Delta-V cost for a simple pro- or retrograde manoeuvre.
 
         Args:
@@ -104,4 +104,4 @@ if __name__ == "__main__":
     iss = (Orbit(bodies.earth, apo=bodies.earth.add_radius(422000), per=bodies.earth.add_radius(418000)))
 
     print("200km LEO -> GTO -> GEO costs approx:")
-    print(f"{leo.pro_retro_grade(gto, gto.perigee) + gto.pro_retro_grade(geo, gto.apogee)} Delta-V.")
+    print(f"{leo.pro_retro_grade_manouvre(gto, gto.perigee) + gto.pro_retro_grade_manouvre(geo, gto.apogee)} Delta-V.")
