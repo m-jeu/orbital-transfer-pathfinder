@@ -10,6 +10,7 @@ class CentralBody:
 
     Attributes:
         mass: the body's mass in kG.
+        radius: the body's radius.
         min_viable_orbit_r:
             the minimum viable distance an object could orbit at from the centre of the body in m
             because of factors like body size, terrain and atmosphere.
@@ -33,11 +34,23 @@ class CentralBody:
                 so specifying the known value in the parameters might improve accuracy.
             """
         self.mass: float = mass
+        self.radius: int = radius
         self.min_viable_orbit_r = radius + lowest_orbit_from_surface
         if mu is None:
             self.mu: float = mass * GRAVITATIONAL_CONSTANT
         else:
             self.mu: float = mu
+
+    def add_radius(self, num: float or int) -> float or int:
+        """Add this bodies radius to a number,
+        so that orbits measured from the surface can easily be converted to orbits measure from the centre.
+
+        Args:
+            num: number to add radius to.
+
+        Returns:
+            num with the radius added to it."""
+        return num + self.radius
 
 
 earth = CentralBody(5.9736E24,
