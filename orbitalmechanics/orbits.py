@@ -42,8 +42,24 @@ class Orbit:
             The speed relative to the central body at the specified attitude in m s^-1."""
         return (self.central_body.mu * ((2 / r) - (1 / self.sm_axis))) ** 0.5
 
+    def pro_retro_grade(self, target_orbit, shared_r: float) -> float:
+        """Compute the Delta-V cost for a simple pro- or retrograde manoeuvre.
 
-#Approximate orbit, because of drag this changes constantly
-iss = Orbit(bodies.earth,
-            bodies.earth.add_radius(420000),
-            0)
+        Args:
+            target_orbit: the orbit to transfer to.
+            shared_r: the distance from the central bodies the original and target orbit share.
+
+        Returns:
+            The required delta-V to go from the original orbit to the target orbit.
+            Negative if manoeuvre requires expending the delta-V in retrograde direction."""
+        return target_orbit._v_at(shared_r) - self._v_at(shared_r)
+
+
+#Example use
+if __name__ == "__main__":
+    leo = Orbit(bodies.earth, bodies.earth.add_radius(200000), 0)
+    gto = Orbit(bodies.earth, 24367500, 0.730337539)
+    geo = Orbit(bodies.earth, 42164000, 0)
+
+    print("200km LEO -> GTO -> GEO costs aprox:")
+    print(f"{leo.pro_retro_grade(gto, gto._per()) + gto.pro_retro_grade(geo, gto._apo())} Delta-V.")
