@@ -73,7 +73,7 @@ class Orbit:
                 1: orbit eccentricity."""
         return mmath.math.v_avg(apo, per), 1 - (2 / (apo / per) + 1)
 
-    def _v_at(self, r) -> float:
+    def v_at(self, r) -> float:
         """Compute the speed relative to the central body at a certain point in the orbit.
 
         Args:
@@ -93,7 +93,7 @@ class Orbit:
         Returns:
             The required delta-V to go from the original orbit to the target orbit.
             Negative if manoeuvre requires expending the delta-V in retrograde direction."""
-        return target_orbit._v_at(shared_r) - self._v_at(shared_r)
+        return target_orbit.v_at(shared_r) - self.v_at(shared_r)
 
 
 #Example use
