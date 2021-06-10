@@ -5,7 +5,7 @@ import mmath.math
 class KeplerElementError(Exception):
     """Exception to help diagnose problems related to not initializing an Orbit object with the proper parameters."""
     def __init__(self):
-        super.__init__("""Orbit should be initialized with either:
+        super().__init__("""Orbit should be initialized with either:
 -semi-major axis and eccentricity as 'a' and 'e' or
 -apogee and perigee as 'apo' and 'per'
 in the keyword argument.""")
@@ -101,6 +101,7 @@ if __name__ == "__main__":
     leo = Orbit(bodies.earth, a=bodies.earth.add_radius(200000), e=0)
     gto = Orbit(bodies.earth, a=24367500, e=0.730337539)
     geo = Orbit(bodies.earth, a=42164000, e=0)
+    iss = (Orbit(bodies.earth, apo=bodies.earth.add_radius(422000), a=bodies.earth.add_radius(418000)))
 
     print("200km LEO -> GTO -> GEO costs approx:")
     print(f"{leo.pro_retro_grade(gto, gto.perigee) + gto.pro_retro_grade(geo, gto.apogee)} Delta-V.")
