@@ -1,4 +1,4 @@
-import bodies
+import orbitalmechanics.bodies as bodies
 import mmath.math
 
 
@@ -109,13 +109,3 @@ class Orbit:
             The distance from the central body's centre at which it's possible if it's possible."""
         overlap = self.apsides.intersection(target_orbit.apsides)
         return None if len(overlap) == 0 else overlap.pop()
-
-
-#Example use
-if __name__ == "__main__":
-    leo = Orbit(bodies.earth, a=bodies.earth.add_radius(200000), e=0)
-    gto = Orbit(bodies.earth, a=24367500, e=0.730337539)
-    geo = Orbit(bodies.earth, a=42164000, e=0)
-
-    print("200km LEO -> GTO -> GEO costs approx:")
-    print(f"{leo.pro_retro_grade_manouvre(gto, gto.perigee) + gto.pro_retro_grade_manouvre(geo, gto.apogee)} Delta-V.")
