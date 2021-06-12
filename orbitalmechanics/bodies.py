@@ -1,5 +1,5 @@
-GRAVITATIONAL_CONSTANT = 6.67430E-11 #kg^-1 m^3 s^-2
-#according to https://ssd.jpl.nasa.gov/?constants
+GRAVITATIONAL_CONSTANT = 6.67430E-11  # kg^-1 m^3 s^-2
+# according to https://ssd.jpl.nasa.gov/?constants
 
 
 class CentralBody:
@@ -23,7 +23,7 @@ class CentralBody:
                  radius: int,
                  lowest_orbit_from_surface: int = 0,
                  mu: float = None,
-                 orbit = None): #FIXME: Typehint & Circle import
+                 orbit=None):  # FIXME: Typehint & Circle import
         """Initialize instance.
 
         Args:
