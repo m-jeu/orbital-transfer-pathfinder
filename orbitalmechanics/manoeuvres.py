@@ -1,5 +1,4 @@
 import orbitalmechanics.orbits as orbits
-import orbitalmechanics.bodies as bodies
 
 import abc
 
