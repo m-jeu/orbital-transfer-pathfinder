@@ -85,18 +85,6 @@ class Orbit:
             The speed relative to the central body at the specified attitude in m s^-1."""
         return (self.central_body.mu * ((2 / r) - (1 / self.sm_axis))) ** 0.5
 
-    def pro_retro_grade_manouvre(self, target_orbit, shared_r: float) -> float:
-        """Compute the Delta-V cost for a simple pro- or retrograde manoeuvre.
-
-        Args:
-            target_orbit: the orbit to transfer to.
-            shared_r: the distance from the central bodies the original and target orbit share.
-
-        Returns:
-            The required delta-V to go from the original orbit to the target orbit.
-            Negative if manoeuvre requires expending the delta-V in retrograde direction."""
-        return target_orbit.v_at(shared_r) - self.v_at(shared_r)
-
     def evaluate_pro_retro_grade_manouvre(self, target_orbit) -> int or None:
         """Evaluate whether, and if so at what attitude, a pro- or retrograde manoeuvre is possible
         to transfer to a certain target orbit.
@@ -116,7 +104,7 @@ class Orbit:
         Args:
             other: object to check determine equality to.
 
-        Returns
+        Returns:
             equality to other object."""
         if isinstance(other, Orbit):
             return self.apsides == other.apsides
