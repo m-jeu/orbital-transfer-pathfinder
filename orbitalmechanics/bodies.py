@@ -14,7 +14,9 @@ class CentralBody:
         min_viable_orbit_r:
             the minimum viable distance an object could orbit at from the centre of the body in m
             because of factors like body size, terrain and atmosphere.
-        mu: the standard gravitational parameter for the body in m^3 s^-2."""
+        mu: the standard gravitational parameter for the body in m^3 s^-2.
+        orbit:
+            the orbit this body is in. optional, but needed to compute the Hill Sphere."""
 
     # TODO: Consider shortening __init__ docstring because of double information with class docstring.
     def __init__(self, mass: float,
@@ -45,6 +47,20 @@ class CentralBody:
         else:
             self.mu: float = mu
         self.orbit = orbit
+        self.hill_sphere_radius = None if orbit is None else CentralBody._hill_sphere(orbit, mass)
+
+    @staticmethod
+    def _hill_sphere(orbit, own_mass: float):
+        """Calculate the radius of the hill sphere of a body.
+
+        Args:
+            orbit: the orbit the body is in. Typehint currently not possible because of circle import problem.
+            own_mass: the mass of the body to calculate the hill sphere radius for.
+
+        Returns:
+            the body's hill sphere radius in m."""
+        return orbit.sm_axis * (1 - orbit.eccentricity) * \
+               ((own_mass / (3 * orbit.central_body.mass)) ** (1/3))
 
     def add_radius(self, num: float or int) -> float or int:
         """Add this bodies radius to a number,
