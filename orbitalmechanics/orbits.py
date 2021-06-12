@@ -37,7 +37,7 @@ class Orbit:
             KeplerElementError: when kepler_elements arguments are not being passed properly.
         """
         self.central_body = central_body
-        if "a" in kepler_elements and "e" in kepler_elements:
+        if "a" in kepler_elements and "e" in kepler_elements:  # TODO: Check whether using kwargs like this is okay.
             self.sm_axis, self.eccentricity = kepler_elements["a"], kepler_elements["e"]
             self.apogee, self.perigee = Orbit._apo_and_per(self.sm_axis, self.eccentricity)
         elif "apo" in kepler_elements and "per" in kepler_elements:
