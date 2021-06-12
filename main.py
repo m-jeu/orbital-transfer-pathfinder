@@ -1,5 +1,6 @@
 import orbitalmechanics.bodies as bodies
 import orbitalmechanics.orbits as orbits
+import orbitalmechanics.manoeuvres as manoeuvres
 
 
 sun = bodies.CentralBody(1.989E30,
@@ -22,5 +23,9 @@ if __name__ == "__main__":
     gto = orbits.Orbit(earth, a=24367500, e=0.730337539)
     geo = orbits.Orbit(earth, a=42164000, e=0)
 
+    m1 = manoeuvres.ProRetroGradeManoeuvre(leo, gto, leo.evaluate_pro_retro_grade_manouvre(gto))
+    m2 = manoeuvres.ProRetroGradeManoeuvre(gto, geo, gto.evaluate_pro_retro_grade_manouvre(gto))
+
+
     print("200km LEO -> GTO -> GEO costs approx:")
-    print(f"{leo.pro_retro_grade_manouvre(gto, gto.perigee) + gto.pro_retro_grade_manouvre(geo, gto.apogee)} Delta-V.")
+    print(f"{m1.dv + m2.dv} Delta-V.")
