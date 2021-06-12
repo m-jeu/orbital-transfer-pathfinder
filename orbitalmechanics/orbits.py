@@ -109,3 +109,15 @@ class Orbit:
             The distance from the central body's centre at which it's possible if it's possible."""
         overlap = self.apsides.intersection(target_orbit.apsides)
         return None if len(overlap) == 0 else overlap.pop()
+
+    def __eq__(self, other) -> bool:
+        """Determine equality based on apsides.
+
+        Args:
+            other: object to check determine equality to.
+
+        Returns
+            equality to other object."""
+        if isinstance(other, Orbit):
+            return self.apsides == other.apsides
+        return False
