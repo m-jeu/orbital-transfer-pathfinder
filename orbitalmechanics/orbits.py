@@ -179,5 +179,19 @@ class Orbit:
                 orbits.append(Orbit(central_body, apo=radia[apo_i], per=radia[per_i]))
         return orbits
 
+    # TODO: Move to bodies.CentralBody or manoeuvres once circle import is fixed.
+    @staticmethod
+    def compute_pro_retro_grade(orbits: list):
+        """Compute all possible pro- and retrograde manoeuvre's at periapsis/apoapsis for a list of manoeuvres,
+        and initialize them.
 
+        Args:
+            orbits: all orbits to compute manoeuvres between."""
+        import orbitalmechanics.manoeuvres as manoeuvres
+        for i in range(len(orbits)):
+            print(f"{i} of {len(orbits)}.")
+            for j in range(i + 1, len(orbits)):
+                r = orbits[i].evaluate_pro_retro_grade_manoeuvre(orbits[j])
+                if r is not None:
+                    manoeuvres.ProRetroGradeManoeuvre(orbits[i], orbits[j], r)  # FIXME: Circle import
 

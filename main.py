@@ -26,8 +26,9 @@ if __name__ == "__main__":
     m1 = manoeuvres.ProRetroGradeManoeuvre(leo, gto, leo.evaluate_pro_retro_grade_manoeuvre(gto))
     m2 = manoeuvres.ProRetroGradeManoeuvre(gto, geo, gto.evaluate_pro_retro_grade_manoeuvre(gto))
 
-
     print("200km LEO -> GTO -> GEO costs approx:")
     print(f"{m1.dv + m2.dv} Delta-V.")
 
-    earth_orbits = orbits.Orbit.create_orbits(earth, 1000, [150000, 20000000])
+    earth_orbits = orbits.Orbit.create_orbits(earth, 100, [150000, 20000000])
+
+    orbits.Orbit.compute_pro_retro_grade(earth_orbits)
