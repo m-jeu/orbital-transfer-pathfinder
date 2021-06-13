@@ -125,6 +125,7 @@ class Orbit:
             hash."""
         return hash((self.apogee, self.perigee))
 
+    # TODO: Move to bodies.CentralBody once circle import is fixed.
     @staticmethod
     def compute_radia(section_limits: list[int], permutations_per_section: int) -> list[int]:
         """Compute all radia permutations that should be used in generating an amount of possible orbits around
@@ -176,3 +177,4 @@ class Orbit:
             for apo_i in range(per_i, len(radia)):
                 orbits.append(Orbit(central_body, apo=radia[apo_i], per=radia[per_i]))
         return orbits
+
