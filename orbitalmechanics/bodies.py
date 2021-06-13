@@ -18,7 +18,8 @@ class CentralBody:
         orbit:
             the orbit this body is in. optional, but needed to compute the Hill Sphere.
         hill_sphere_radius: the hill sphere radius of this body in m.
-        max_viable_orbit_r: estimation of the maximum viable orbit r based on hill_sphere_radius in m."""
+        max_viable_orbit_r:
+            estimation of the maximum viable orbit r based on hill_sphere_radius in m rounded to nearest int."""
 
     # TODO: Consider shortening __init__ docstring because of double information with class docstring.
     def __init__(self, mass: float,
@@ -50,7 +51,7 @@ class CentralBody:
             self.mu: float = mu
         self.orbit = orbit
         self.hill_sphere_radius = None if orbit is None else CentralBody._hill_sphere(orbit, mass)
-        self.max_viable_orbit_r = None if self.hill_sphere_radius is None else self.hill_sphere_radius / 3
+        self.max_viable_orbit_r = None if self.hill_sphere_radius is None else round(self.hill_sphere_radius / 3)
         #                                   TODO: Current number based on wikipedia, find better source  ^
 
     @staticmethod
@@ -62,9 +63,9 @@ class CentralBody:
             own_mass: the mass of the body to calculate the hill sphere radius for.
 
         Returns:
-            the body's hill sphere radius in m. rounded to nearest int."""
-        return round(orbit.sm_axis * (1 - orbit.eccentricity) * \
-               ((own_mass / (3 * orbit.central_body.mass)) ** (1/3)))
+            the body's hill sphere radius in m."""
+        return orbit.sm_axis * (1 - orbit.eccentricity) * \
+               ((own_mass / (3 * orbit.central_body.mass)) ** (1/3))
 
     def add_radius(self, num: float or int) -> float or int:
         """Add this bodies radius to a number,
