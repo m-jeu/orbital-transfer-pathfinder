@@ -109,3 +109,10 @@ class Orbit:
         if isinstance(other, Orbit):
             return self.apsides == other.apsides
         return False
+
+    def __hash__(self) -> int:
+        """Hash based on apoapsis/periapsis.
+
+        Returns:
+            hash."""
+        return hash((self.apogee, self.perigee))
