@@ -33,7 +33,7 @@ class CentralBody:
                  radius: int,
                  lowest_orbit_from_surface: int = 0,
                  mu: float = None,
-                 orbit: orbits.Orbit = None):  # FIXME: Typehint & Circle import
+                 orbit: orbits.Orbit = None):
         """Initialize instance.
 
         Args:
@@ -47,8 +47,7 @@ class CentralBody:
                 the value of mu is currently knows to greater precision the G or M for many bodies
                 so specifying the known value in the parameters might improve accuracy.
             orbit:
-                optional orbit around another more massive Central Body.
-                typehint currently not possible because of circle-import problem."""
+                optional orbit around another more massive Central Body."""
         self.mass: float = mass
         self.radius: int = radius
         self.min_viable_orbit_r = radius + lowest_orbit_from_surface
@@ -66,7 +65,7 @@ class CentralBody:
         """Calculate the radius of the hill sphere of a body.
 
         Args:
-            orbit: the orbit the body is in. Typehint currently not possible because of circle import problem.
+            orbit: the orbit the body is in.
             own_mass: the mass of the body to calculate the hill sphere radius for.
 
         Returns:
