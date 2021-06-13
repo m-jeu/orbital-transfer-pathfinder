@@ -47,6 +47,12 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
                    ((self.orbit1 == other.orbit2) and (self.orbit2 == other.orbit1))  # FIXME: Ugly conditional.
         return False
 
+    def __str__(self) -> str:
+        return f"{self.dv}m/s manoeuvre between {self.orbit1} and {self.orbit2}."
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
 
 class ProRetroGradeManoeuvre(BaseManoeuvre):
     """Bidirectional 1-burn pro- or retrograde manoeuvre at apoapsis or periapsis.

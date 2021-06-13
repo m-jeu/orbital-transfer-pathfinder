@@ -98,6 +98,12 @@ class Orbit:
         overlap = self.apsides.intersection(target_orbit.apsides)
         return None if len(overlap) == 0 else overlap.pop()
 
+    def __str__(self) -> str:
+        return f"Orbit: apoapsis={self.apogee}m periapsis={self.perigee}m."
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
     def __eq__(self, other) -> bool:
         """Determine equality based on apsides.
 
