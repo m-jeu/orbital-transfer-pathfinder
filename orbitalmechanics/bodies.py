@@ -16,7 +16,9 @@ class CentralBody:
             because of factors like body size, terrain and atmosphere.
         mu: the standard gravitational parameter for the body in m^3 s^-2.
         orbit:
-            the orbit this body is in. optional, but needed to compute the Hill Sphere."""
+            the orbit this body is in. optional, but needed to compute the Hill Sphere.
+        hill_sphere_radius: the hill sphere radius of this body in m.
+        max_viable_orbit_r: estimation of the maximum viable orbit r based on hill_sphere_radius in m."""
 
     # TODO: Consider shortening __init__ docstring because of double information with class docstring.
     def __init__(self, mass: float,
@@ -48,6 +50,8 @@ class CentralBody:
             self.mu: float = mu
         self.orbit = orbit
         self.hill_sphere_radius = None if orbit is None else CentralBody._hill_sphere(orbit, mass)
+        self.max_viable_orbit_r = None if self.hill_sphere_radius is None else self.hill_sphere_radius / 3
+        #                                   TODO: Current number based on wikipedia, find better source  ^
 
     @staticmethod
     def _hill_sphere(orbit, own_mass: float):
