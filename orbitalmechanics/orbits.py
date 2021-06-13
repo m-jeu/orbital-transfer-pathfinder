@@ -40,7 +40,7 @@ class Orbit:
         if "a" in kepler_elements and "e" in kepler_elements:  # TODO: Check whether using kwargs like this is okay.
             self.sm_axis, self.eccentricity = kepler_elements["a"], kepler_elements["e"]
             self.apogee, self.perigee = Orbit._apo_and_per(self.sm_axis, self.eccentricity)
-        elif "apo" in kepler_elements and "per" in kepler_elements:
+        elif "apo" in kepler_elements and "per" in kepler_elements:  # FIXME: String comparisons slow down performance.
             self.apogee, self.perigee = kepler_elements["apo"], kepler_elements["per"]
             self.sm_axis, self.eccentricity = Orbit._a_and_e(self.apogee, self.perigee)
         else:
