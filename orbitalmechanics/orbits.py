@@ -116,3 +116,55 @@ class Orbit:
         Returns:
             hash."""
         return hash((self.apogee, self.perigee))
+
+    @staticmethod
+    def compute_radia(section_limits: list[int], permutations_per_section: int) -> list[int]:
+        """Compute all radia permutations that should be used in generating an amount of possible orbits around
+        a body, possibly divided into several sections.
+
+        Args:
+            section_limits: the left/right end of every section.
+            permutations_per_section: amount of radia that should be computed in every section.
+
+        Returns:
+            ((#(section_limit) - 1) * permutations_per_section) radia.
+
+        For example, when dividing into 3 sections:
+        10.000 <-> 100.000 <-> 500.000 <-> 1.000.000.
+        With permutations_per_sections = 1000.
+        Then there will be 1000 uniformly distributed numbers between
+        the limit on the left of the <-> symbol and the limit on the right of the symbol
+        returned in an ordered list."""
+        radia = []
+        while len(section_limits) > 1:
+            for r in range(section_limits[0], section_limits[1],
+                           (section_limits[1] - section_limits[0]) // permutations_per_section):
+                radia.append(r)
+            section_limits.pop()
+        return radia
+
+    # TODO: Move to bodies.CentralBody once circle import is fixed.
+    @staticmethod
+    def create_orbits(central_body: bodies.CentralBody,
+                      permutations_per_section: int,
+                      section_limiters: list[int] = None) -> list:
+        """Generate a significant amount of possible orbits around a certain CentralBody, divided into sections.
+        Calls Orbit.compute_radia with central_body.min_viable_orbit_r and central_body.max_viable_orbit_r as extra
+        limits. Consult Orbit.compute_radia for detailed section_limiters information.
+
+        Args:
+            central_body:
+                CentralBody that orbits are around. CentralBody should have had orbit parameter filled on
+                initialization, so that Hill Sphere could be estimated.
+            permutations_per_section:
+                the amount of attitudes that should be used for apoapsis/periapsis in every section.
+            section_limiters:
+                the limits between sections. Consult Orbit.compute_radia() for detailed documentation."""
+        if section_limiters is None: section_limiters = []
+        section_limiters = [central_body.min_viable_orbit_r] + section_limiters + [central_body.max_viable_orbit_r]
+        radia = Orbit.compute_radia(section_limiters, permutations_per_section)
+        orbits = []
+        for per_i in range(len(radia)):
+            for apo_i in range(per_i, len(radia)):
+                orbits.append(Orbit(central_body, apo=radia[apo_i], per=radia[per_i]))
+        return orbits

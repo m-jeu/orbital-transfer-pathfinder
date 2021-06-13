@@ -29,3 +29,5 @@ if __name__ == "__main__":
 
     print("200km LEO -> GTO -> GEO costs approx:")
     print(f"{m1.dv + m2.dv} Delta-V.")
+
+    earth_orbits = orbits.Orbit.create_orbits(earth, 1000, [150000, 20000000])
