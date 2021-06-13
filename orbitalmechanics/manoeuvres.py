@@ -1,6 +1,7 @@
-import orbitalmechanics.orbits as orbits
-
+from __future__ import annotations
 import abc
+
+import orbitalmechanics.orbits as orbits
 
 
 class BaseManoeuvre(metaclass=abc.ABCMeta):

@@ -1,3 +1,9 @@
+# To prevent circle import (for typehints) problems
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    import orbitalmechanics.manoeuvres
+
+
 import orbitalmechanics.bodies as bodies
 import mmath.math
 

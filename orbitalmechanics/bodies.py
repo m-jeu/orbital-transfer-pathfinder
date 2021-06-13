@@ -1,3 +1,10 @@
+# To prevent circle import (for typehints) problems
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    import orbitalmechanics.orbits as orbits
+
+
 GRAVITATIONAL_CONSTANT = 6.67430E-11  # kg^-1 m^3 s^-2
 # according to https://ssd.jpl.nasa.gov/?constants
 
@@ -26,7 +33,7 @@ class CentralBody:
                  radius: int,
                  lowest_orbit_from_surface: int = 0,
                  mu: float = None,
-                 orbit=None):  # FIXME: Typehint & Circle import
+                 orbit: orbits.Orbit = None):  # FIXME: Typehint & Circle import
         """Initialize instance.
 
         Args:
@@ -55,7 +62,7 @@ class CentralBody:
         #                                   TODO: Current number based on wikipedia, find better source  ^
 
     @staticmethod
-    def _hill_sphere(orbit, own_mass: float):
+    def _hill_sphere(orbit: orbits.Orbit, own_mass: float):
         """Calculate the radius of the hill sphere of a body.
 
         Args:
