@@ -62,9 +62,9 @@ class CentralBody:
             own_mass: the mass of the body to calculate the hill sphere radius for.
 
         Returns:
-            the body's hill sphere radius in m."""
-        return orbit.sm_axis * (1 - orbit.eccentricity) * \
-               ((own_mass / (3 * orbit.central_body.mass)) ** (1/3))
+            the body's hill sphere radius in m. rounded to nearest int."""
+        return round(orbit.sm_axis * (1 - orbit.eccentricity) * \
+               ((own_mass / (3 * orbit.central_body.mass)) ** (1/3)))
 
     def add_radius(self, num: float or int) -> float or int:
         """Add this bodies radius to a number,
