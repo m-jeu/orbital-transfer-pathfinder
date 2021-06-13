@@ -12,12 +12,15 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
         dv: Delta-V cost."""
     def __init__(self, orbit1: orbits.Orbit, orbit2: orbits.Orbit, insect_r):
         """Initialize instance with orbit1, orbit2, dv attributes.
+        Adds itself to orbit1- and orbit2.manoeuvres.
 
         Non-attribute args:
             insect_r: the attitude at which the 2 orbits intersect (and the manoeuvre is performed)."""
         self.orbit1: orbits.Orbit = orbit1
         self.orbit2: orbits.Orbit = orbit2
         self.dv = self._delta_v(insect_r)
+        self.orbit1.manoeuvres.add(self)
+        self.orbit2.manoeuvres.add(self)
 
     @abc.abstractmethod
     def _delta_v(self, insect_r):
@@ -46,6 +49,13 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
             return ((self.orbit1 == other.orbit1) and (self.orbit2 == other.orbit2)) or \
                    ((self.orbit1 == other.orbit2) and (self.orbit2 == other.orbit1))  # FIXME: Ugly conditional.
         return False
+
+    def __hash__(self) -> int:
+        """Hash based on associated orbits.
+
+        Returns:
+            hash."""
+        return hash((self.orbit1, self.orbit2))
 
     def __str__(self) -> str:
         return f"{self.dv}m/s manoeuvre between {self.orbit1} and {self.orbit2}."

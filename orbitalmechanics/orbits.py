@@ -16,6 +16,7 @@ class Orbit:
 
     Attributes:
         central_body: the body this orbit is around.
+        manoeuvres: all manoeuvres associated with this Orbit. Added to by Manoeuvre constructor.
         semimajor_axis: the orbit's semimajor axis (a) in m.
         eccentricity: the orbit's eccentricity (e). 0 means orbit is circular.
         apogee: the orbit's apogee in m. Should be int for transfer-calculations.
@@ -37,6 +38,7 @@ class Orbit:
             KeplerElementError: when kepler_elements arguments are not being passed properly.
         """
         self.central_body = central_body
+        self.manoeuvres = set()
         if "a" in kepler_elements and "e" in kepler_elements:  # TODO: Check whether using kwargs like this is okay.
             self.sm_axis, self.eccentricity = kepler_elements["a"], kepler_elements["e"]
             self.apogee, self.perigee = Orbit._apo_and_per(self.sm_axis, self.eccentricity)
