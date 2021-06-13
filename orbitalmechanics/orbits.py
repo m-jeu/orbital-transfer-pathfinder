@@ -98,7 +98,7 @@ class Orbit:
             None if manoeuvre is not possible.
             The distance from the central body's centre at which it's possible if it's possible."""
         overlap = self.apsides.intersection(target_orbit.apsides)
-        return None if len(overlap) == 0 or self == target_orbit else overlap.pop()
+        return None if len(overlap) == 0 else overlap.pop()
 
     def __str__(self) -> str:
         return f"Orbit: apoapsis={self.apogee}m periapsis={self.perigee}m."
@@ -178,4 +178,6 @@ class Orbit:
             for apo_i in range(per_i, len(radia)):
                 orbits.append(Orbit(central_body, apo=radia[apo_i], per=radia[per_i]))
         return orbits
+
+
 
