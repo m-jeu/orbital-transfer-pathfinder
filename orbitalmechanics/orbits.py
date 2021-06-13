@@ -1,7 +1,7 @@
 # To prevent circle import (for typehints) problems
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    import orbitalmechanics.manoeuvres
+#from typing import TYPE_CHECKING TODO: Check whether this is necesarry after implementing new features.
+#if TYPE_CHECKING:
+import orbitalmechanics.manoeuvres as manoeuvres
 
 
 import orbitalmechanics.bodies as bodies
@@ -193,7 +193,6 @@ class Orbit:
 
         Args:
             orbits: all orbits to compute manoeuvres between."""
-        import orbitalmechanics.manoeuvres as manoeuvres
         for i in range(len(orbits)):
             print(f"{i} of {len(orbits)}.")
             for j in range(i + 1, len(orbits)):
