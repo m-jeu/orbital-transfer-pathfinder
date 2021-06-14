@@ -8,10 +8,11 @@ class OrbitCollection:
 
     Attributes:
         central_body: the body the orbits are around.
-        apside_map: dictionairy with apsides as keys, and list containing every orbit with that apside as value.
-        orbits: all the orbits in this collection."""
+        apside_map: dictionary with apsides as keys, and list containing every orbit with that apside as value.
+        orbits: all the orbits in this collection.
+        manoeuvre_types: all types of manoeuvres (subclass of Manoeuvre) that can be performed between self.orbits."""
 
-    def __init__(self, central_body: bodies.CentralBody):
+    def __init__(self, central_body: bodies.CentralBody, manoeuvre_types: list[type]):
         """Initialize instance with central_body, apside_map and orbits.
 
         Args:
@@ -19,6 +20,7 @@ class OrbitCollection:
         self.central_body = central_body
         self.apside_map = {}
         self.orbits = []
+        self.manoeuvre_types = manoeuvre_types # TODO: For later use, unused for now.
 
     def add_orbit(self, orbit: orbits.Orbit):
         """Add an orbit to self.orbits, and add it to self.apside_map according to it's own apsides.
