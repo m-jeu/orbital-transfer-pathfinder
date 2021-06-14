@@ -92,6 +92,7 @@ class ProRetroGradeManoeuvre(BaseManoeuvre):
         Consult parent method documentation for full documentation."""
         return abs(self.orbit1.v_at(insect_r) - self.orbit2.v_at(insect_r))
 
+    # FIXME: Performance can probably improved dramatically by having apsides dictionary in Orbit.
     @staticmethod
     def compute_all(orbits: list):
         """Compute all possible 1-burn pro- retrograde manoeuvres between list or orbits.
