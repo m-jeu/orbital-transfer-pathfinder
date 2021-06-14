@@ -49,6 +49,20 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
             orbits: orbits to compute manoeuvres between."""
         pass
 
+    @staticmethod
+    @abc.abstractmethod
+    def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> int or None:
+        """Evaluate whether a manoeuvre of own type is possible between 2 orbits, and at what r.
+
+        Args:
+            orbit1: orbit1 to compare.
+            orbit2: orbit2 to compare.
+
+        Returns:
+            None if manoeuvre is not possible.
+            radius in m at which it is possible if it is."""
+        pass
+
     def __eq__(self, other) -> bool:
         """Determine equality based on connected orbits.
 
@@ -104,6 +118,20 @@ class ProRetroGradeManoeuvre(BaseManoeuvre):
         for i in range(len(orbits)):
             print(f"{i} of {len(orbits)}")
             for j in range(i + 1, len(orbits)):
-                r = orbits[i].evaluate_pro_retro_grade_manoeuvre(orbits[j])
+                r = ProRetroGradeManoeuvre.evaluate(orbits[i], orbits[j])
                 if r is not None:
                     ProRetroGradeManoeuvre(orbits[i], orbits[j], r)
+
+    @staticmethod
+    def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> int or None:
+        """Evaluate whether 1-burn pro- or retrograde manoeuvre is possible between 2 orbits, and at what r.
+
+        Args:
+            orbit1: orbit1 to compare.
+            orbit2: orbit2 to compare.
+
+        Returns:
+            None if manoeuvre is not possible.
+            radius in m at which it is possible if it is."""
+        overlap = orbit1.apsides.intersection(orbit2.apsides)
+        return None if len(overlap) == 0 else overlap.pop()
