@@ -30,8 +30,10 @@ if __name__ == "__main__":
     print("200km LEO -> GTO -> GEO costs approx:")
     print(f"{m1.dv + m2.dv} Delta-V.")
 
-    possible_orbits = orbitcollections.OrbitCollection(earth)
+    possible_orbits = orbitcollections.OrbitCollection(earth, [manoeuvres.ProRetroGradeManoeuvre])
 
     possible_orbits.create_orbits(100, [150000, 20000000])
 
     possible_orbits.compute_all_manoeuvres()
+
+
