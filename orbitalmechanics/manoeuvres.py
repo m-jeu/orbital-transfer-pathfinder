@@ -38,6 +38,17 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
             origin: orbit on one 'end' of the manoeuvre, whose other side should be fetched."""
         return self.orbit2 if origin == self.orbit1 else self.orbit1  # TODO: Consider implementing exception.
 
+    @staticmethod
+    @abc.abstractmethod
+    def compute_all(orbits: list[orbits.Orbit]):
+        """Compute all possible manoeuvres of own type between list or orbits.
+
+        Manoeuvres assign themselves to corresponding orbits, so no return value.
+
+        Args:
+            orbits: orbits to compute manoeuvres between."""
+        pass
+
     def __eq__(self, other) -> bool:
         """Determine equality based on connected orbits.
 
@@ -80,3 +91,18 @@ class ProRetroGradeManoeuvre(BaseManoeuvre):
 
         Consult parent method documentation for full documentation."""
         return abs(self.orbit1.v_at(insect_r) - self.orbit2.v_at(insect_r))
+
+    @staticmethod
+    def compute_all(orbits: list):
+        """Compute all possible 1-burn pro- retrograde manoeuvres between list or orbits.
+
+        Manoeuvres assign themselves to corresponding orbits, so no return value.
+
+        Args:
+            orbits: orbits to compute manoeuvres between."""
+        for i in range(len(orbits)):
+            print(f"{i} of {len(orbits)}")
+            for j in range(i + 1, len(orbits)):
+                r = orbits[i].evaluate_pro_retro_grade_manoeuvre(orbits[j])
+                if r is not None:
+                    ProRetroGradeManoeuvre(orbits[i], orbits[j], r)

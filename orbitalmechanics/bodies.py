@@ -83,3 +83,32 @@ class CentralBody:
         Returns:
             num with the radius added to it."""
         return num + self.radius
+
+    def compute_radia(self, permutations_per_section: int, section_limits: list[int] = None) -> list[int]:
+        """Compute all radia permutations that should be used in generating an amount of possible orbits around
+        a body, possibly divided into several sections.
+
+        Args:
+            permutations_per_section: amount of radia that should be computed in every section.
+            section_limits:
+                the left/right end of every section. self.min_viable_orbit_r and .max_viable_orbit_r are added
+                respectively to start- end end of this list.
+
+        Returns:
+            ((#(section_limit) - 1) * permutations_per_section) radia.
+
+        For example, when dividing into 3 sections:
+        10.000 <-> 100.000 <-> 500.000 <-> 1.000.000.
+        With permutations_per_sections = 1000.
+        Then there will be 1000 uniformly distributed numbers between
+        the limit on the left of the <-> symbol and the limit on the right of the symbol
+        returned in an ordered list."""
+        if section_limits is None: section_limits = []
+        section_limits = [self.min_viable_orbit_r] + section_limits + [self.max_viable_orbit_r]
+        radia = []
+        while len(section_limits) > 1:
+            for r in range(section_limits[0], section_limits[1],
+                           (section_limits[1] - section_limits[0]) // permutations_per_section):
+                radia.append(r)
+            section_limits.pop()
+        return radia

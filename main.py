@@ -31,4 +31,4 @@ if __name__ == "__main__":
 
     earth_orbits = orbits.Orbit.create_orbits(earth, 100, [150000, 20000000])
 
-    orbits.Orbit.compute_pro_retro_grade(earth_orbits)
+    manoeuvres.ProRetroGradeManoeuvre.compute_all(earth_orbits)
