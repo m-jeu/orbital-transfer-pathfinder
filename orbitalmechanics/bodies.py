@@ -110,5 +110,5 @@ class CentralBody:
             for r in range(section_limits[0], section_limits[1],
                            (section_limits[1] - section_limits[0]) // permutations_per_section):
                 radia.append(r)
-            section_limits.pop()
+            section_limits.pop(0)
         return radia

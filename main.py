@@ -1,6 +1,7 @@
 import orbitalmechanics.bodies as bodies
 import orbitalmechanics.orbits as orbits
 import orbitalmechanics.manoeuvres as manoeuvres
+import orbitalmechanics.orbitscollections as orbitcollections
 
 
 sun = bodies.CentralBody(1.989E30,
@@ -29,6 +30,8 @@ if __name__ == "__main__":
     print("200km LEO -> GTO -> GEO costs approx:")
     print(f"{m1.dv + m2.dv} Delta-V.")
 
-    earth_orbits = orbits.Orbit.create_orbits(earth, 100, [150000, 20000000])
+    possible_orbits = orbitcollections.OrbitCollection(earth)
 
-    manoeuvres.ProRetroGradeManoeuvre.compute_all(earth_orbits)
+    possible_orbits.create_orbits(100, [150000, 20000000])
+
+    possible_orbits.compute_all_manoeuvres()

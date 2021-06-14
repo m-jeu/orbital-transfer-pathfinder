@@ -40,17 +40,6 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def compute_all(orbits: list[orbits.Orbit]):
-        """Compute all possible manoeuvres of own type between list or orbits.
-
-        Manoeuvres assign themselves to corresponding orbits, so no return value.
-
-        Args:
-            orbits: orbits to compute manoeuvres between."""
-        pass
-
-    @staticmethod
-    @abc.abstractmethod
     def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> int or None:
         """Evaluate whether a manoeuvre of own type is possible between 2 orbits, and at what r.
 
@@ -105,22 +94,6 @@ class ProRetroGradeManoeuvre(BaseManoeuvre):
 
         Consult parent method documentation for full documentation."""
         return abs(self.orbit1.v_at(insect_r) - self.orbit2.v_at(insect_r))
-
-    # FIXME: Performance can probably improved dramatically by having apsides dictionary in Orbit.
-    @staticmethod
-    def compute_all(orbits: list):
-        """Compute all possible 1-burn pro- retrograde manoeuvres between list or orbits.
-
-        Manoeuvres assign themselves to corresponding orbits, so no return value.
-
-        Args:
-            orbits: orbits to compute manoeuvres between."""
-        for i in range(len(orbits)):
-            print(f"{i} of {len(orbits)}")
-            for j in range(i + 1, len(orbits)):
-                r = ProRetroGradeManoeuvre.evaluate(orbits[i], orbits[j])
-                if r is not None:
-                    ProRetroGradeManoeuvre(orbits[i], orbits[j], r)
 
     @staticmethod
     def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> int or None:

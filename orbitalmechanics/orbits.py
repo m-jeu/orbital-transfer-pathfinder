@@ -117,27 +117,3 @@ class Orbit:
         Returns:
             hash."""
         return hash((self.apogee, self.perigee))
-
-    @staticmethod
-    def create_orbits(central_body: bodies.CentralBody,
-                      permutations_per_section: int,
-                      section_limiters: list[int] = None) -> list:
-        """Generate a significant amount of possible orbits around a certain CentralBody, divided into sections.
-        Calls CentralBody.compute_radia with central_body.min_viable_orbit_r and central_body.max_viable_orbit_r as extra
-        limits. Consult Orbit.compute_radia for detailed section_limiters information.
-
-        Args:
-            central_body:
-                CentralBody that orbits are around. CentralBody should have had orbit parameter filled on
-                initialization, so that Hill Sphere could be estimated.
-            permutations_per_section:
-                the amount of attitudes that should be used for apoapsis/periapsis in every section.
-            section_limiters:
-                the limits between sections. Consult CentralBody.compute_radia() for detailed documentation.
-                """  # TODO: Add Returns doc
-        radia = central_body.compute_radia(permutations_per_section, section_limiters)
-        orbits = []
-        for per_i in range(len(radia)):
-            for apo_i in range(per_i, len(radia)):
-                orbits.append(Orbit(central_body, apo=radia[apo_i], per=radia[per_i]))
-        return orbits
