@@ -188,7 +188,7 @@ class Orbit:
     # TODO: Move to bodies.CentralBody or manoeuvres once circle import is fixed.
     @staticmethod
     def compute_pro_retro_grade(orbits: list):
-        """Compute all possible pro- and retrograde manoeuvre's at periapsis/apoapsis for a list of manoeuvres,
+        """Compute all possible pro- and retrograde manoeuvre's at periapsis/apoapsis for a list of orbits,
         and initialize them.
 
         Args:
