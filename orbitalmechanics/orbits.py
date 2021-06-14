@@ -131,7 +131,6 @@ class Orbit:
             hash."""
         return hash((self.apogee, self.perigee))
 
-    # TODO: Move to bodies.CentralBody once circle import is fixed.
     @staticmethod
     def create_orbits(central_body: bodies.CentralBody,
                       permutations_per_section: int,
