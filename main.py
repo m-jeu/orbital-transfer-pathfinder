@@ -13,11 +13,11 @@ earth_orbit = orbits.Orbit(sun,
                            a=149598023000,
                            e=0.0167086)
 
-earth = bodies.CentralBody(5.9736E24,
-                           6371000,
-                           160000,
-                           3.986004418E14,
-                           earth_orbit)
+earth = bodies.CentralBodyInOrbit(5.9736E24,
+                                  6371000,
+                                  160000,
+                                  3.986004418E14,
+                                  earth_orbit)
 
 if __name__ == "__main__":
     leo = orbits.Orbit(earth, a=earth.add_radius(200000), e=0)
@@ -35,5 +35,3 @@ if __name__ == "__main__":
     possible_orbits.create_orbits(100, [150000, 20000000])
 
     possible_orbits.compute_all_manoeuvres()
-
-

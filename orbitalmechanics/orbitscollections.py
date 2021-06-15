@@ -12,7 +12,7 @@ class OrbitCollection:
         orbits: all the orbits in this collection.
         manoeuvre_types: all types of manoeuvres (subclass of Manoeuvre) that can be performed between self.orbits."""
 
-    def __init__(self, central_body: bodies.CentralBody, manoeuvre_types: list[type]):
+    def __init__(self, central_body: bodies.CentralBodyInOrbit, manoeuvre_types: list[type]):
         """Initialize instance with central_body, apside_map and orbits.
 
         Args:
@@ -60,5 +60,3 @@ class OrbitCollection:
             for i in range(0, len(orbits)):
                 for j in range(i + 1, len(orbits)):
                     manoeuvres.ProRetroGradeManoeuvre(orbits[i], orbits[j], r)
-
-
