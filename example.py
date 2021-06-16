@@ -1,7 +1,7 @@
 import orbitalmechanics.bodies as bodies
 import orbitalmechanics.orbits as orbits
 import orbitalmechanics.manoeuvres as manoeuvres
-import orbitalmechanics.orbitscollections as orbitcollections
+import orbitalmechanics.orbitcollections as orbitcollections
 
 
 sun = bodies.CentralBody(1.989E30,
