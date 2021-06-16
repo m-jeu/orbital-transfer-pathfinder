@@ -29,15 +29,12 @@ class Orbit:
         perigee: the orbit's perigee in m. Should be int for transfer-calculations.
         apsides: apogee and perigee in 1 set, for convenience."""
 
-    def __init__(self, central_body: bodies.CentralBody, **kepler_elements):
+    def __init__(self, central_body: bodies.CentralBody,
+                 a: int = None, e: float = None,
+                 apo: int = None, per: int = None):
         """Initialize instance with central_body, semimajor_axis, eccentricity, apogee and perigee.
 
-        Keyword-arguments kepler_elements may contain:
-            'a': semi-major axis.
-            'e': eccentricity.
-            'apo': apogee as integer.
-            'per': perigee as integer.
-        kepler_elements must contain either 'a' and 'e', or 'apo' and 'per'.
+        Either apo/per, or a/e need to be passed. The other 2 can be computed from the first 2.
         Consult Class attribute documentation for full documentation.
 
         Raises:
@@ -45,12 +42,12 @@ class Orbit:
         """
         self.central_body = central_body
         self.manoeuvres = set()
-        if "a" in kepler_elements and "e" in kepler_elements:  # TODO: Check whether using kwargs like this is okay.
-            self.sm_axis, self.eccentricity = kepler_elements["a"], kepler_elements["e"]
-            self.apogee, self.perigee = Orbit._apo_and_per(self.sm_axis, self.eccentricity)
-        elif "apo" in kepler_elements and "per" in kepler_elements:  # FIXME: String comparisons slow down performance.
-            self.apogee, self.perigee = kepler_elements["apo"], kepler_elements["per"]
+        if apo is not None and per is not None:  # Compute a/e from apo/per
+            self.apogee, self.perigee = apo, per
             self.sm_axis, self.eccentricity = Orbit._a_and_e(self.apogee, self.perigee)
+        elif a is not None and e is not None:  # Compute apo/per from a/e
+            self.sm_axis, self.eccentricity = a, e
+            self.apogee, self.perigee = Orbit._apo_and_per(self.sm_axis, self.eccentricity)
         else:
             raise KeplerElementError()
         self.apsides: set[int] = {self.apogee, self.perigee}
