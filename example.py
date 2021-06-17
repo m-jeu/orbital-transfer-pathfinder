@@ -20,16 +20,19 @@ earth = bodies.CentralBodyInOrbit(5.9736E24,
                                   earth_orbit)
 
 if __name__ == "__main__":
-    leo = orbits.Orbit(earth, a=earth.add_radius(200000), e=0)
-    gto = orbits.Orbit(earth, a=24367500, e=0.730337539)
+    print("""Below are the calculations for the Delta-V cost of a simple example mission from
+the kennedy space center (28 degree inclination) to a geostationary orbit through a 200km LEO parking orbit.\n""")
+
+    leo = orbits.Orbit(earth, a=earth.add_radius(200000), e=0, i=28)
+    gto = orbits.Orbit(earth, a=24367500, e=0.730337539, i=28)
     geo = orbits.Orbit(earth, a=42164000, e=0)
 
-    m1 = manoeuvres.ProRetroGradeManoeuvre(leo, gto, manoeuvres.ProRetroGradeManoeuvre.evaluate(leo, gto))
-    m2 = manoeuvres.ProRetroGradeManoeuvre(gto, geo, manoeuvres.ProRetroGradeManoeuvre.evaluate(gto, geo))
+    leo_to_gto = manoeuvres.ProRetroGradeManoeuvre(leo, gto, leo.apsides.intersection(gto.apsides).pop())
+    gto_to_geo = manoeuvres.InclinationAndProRetroGradeManoeuvre(gto, geo, gto.apsides.intersection(geo.apsides).pop())
 
-    print("200km LEO -> GTO -> GEO costs approx:")
-    print(f"{m1.dv + m2.dv} Delta-V.")
+    print(f"Costs approx. {leo_to_gto.dv + gto_to_geo.dv} m/s Delta-V.", end="\n\n")
 
+    # Example of how to compute all orbits in 1 inclination, and all possible manoeuvres between them.
     possible_orbits = orbitcollections.OrbitCollection(earth, [manoeuvres.ProRetroGradeManoeuvre])
 
     possible_orbits.create_orbits(100, [150000, 20000000])

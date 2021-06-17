@@ -27,11 +27,13 @@ class Orbit:
         eccentricity: the orbit's eccentricity (e). 0 means orbit is circular.
         apogee: the orbit's apogee in m. Should be int for transfer-calculations.
         perigee: the orbit's perigee in m. Should be int for transfer-calculations.
-        apsides: apogee and perigee in 1 set, for convenience."""
+        apsides: apogee and perigee in 1 set, for convenience.
+        inclination: the orbit's inclination in degrees from 0 to 180 (inclusive)."""
 
     def __init__(self, central_body: bodies.CentralBody,
                  a: int = None, e: float = None,
-                 apo: int = None, per: int = None):
+                 apo: int = None, per: int = None,
+                 i: int = 0):
         """Initialize instance with central_body, semimajor_axis, eccentricity, apogee and perigee.
 
         Either apo/per, or a/e need to be passed. The other 2 can be computed from the first 2.
@@ -40,8 +42,8 @@ class Orbit:
         Raises:
             KeplerElementError: when kepler_elements arguments are not being passed properly.
         """
-        self.central_body = central_body
-        self.manoeuvres = set()
+        self.central_body: bodies.CentralBody = central_body
+        self.manoeuvres: set[manoeuvres.BaseManoeuvre] = set()
         if apo is not None and per is not None:  # Compute a/e from apo/per
             self.apogee, self.perigee = apo, per
             self.sm_axis, self.eccentricity = Orbit._a_and_e(self.apogee, self.perigee)
@@ -50,6 +52,7 @@ class Orbit:
             self.apogee, self.perigee = Orbit._apo_and_per(self.sm_axis, self.eccentricity)
         else:
             raise KeplerElementError()
+        self.inclination: int = i
         self.apsides: set[int] = {self.apogee, self.perigee}
 
     @staticmethod
@@ -97,7 +100,7 @@ class Orbit:
         return self.__str__()
 
     def __eq__(self, other) -> bool:
-        """Determine equality based on apsides.
+        """Determine equality based on apsides and inclination.
 
         Args:
             other: object to check determine equality to.
@@ -105,12 +108,12 @@ class Orbit:
         Returns:
             equality to other object."""
         if isinstance(other, Orbit):
-            return self.apsides == other.apsides
+            return self.apsides == other.apsides and self.inclination == other.inclination
         return False
 
     def __hash__(self) -> int:
-        """Hash based on apoapsis/periapsis.
+        """Hash based on apoapsis, periapsis and inclination.
 
         Returns:
             hash."""
-        return hash((self.apogee, self.perigee))
+        return hash((self.apogee, self.perigee, self.inclination))

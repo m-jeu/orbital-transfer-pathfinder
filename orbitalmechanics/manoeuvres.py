@@ -1,6 +1,7 @@
 from __future__ import annotations
 import abc
 
+import mmath.math
 import orbitalmechanics.orbits as orbits
 
 
@@ -11,7 +12,7 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
         orbit1: orbit on one 'end' of the manoeuvre.
         orbit2: orbit on other 'end' of the manoeuvre.
         dv: Delta-V cost."""
-    def __init__(self, orbit1: orbits.Orbit, orbit2: orbits.Orbit, insect_r):
+    def __init__(self, orbit1: orbits.Orbit, orbit2: orbits.Orbit, insect_r: int):
         """Initialize instance with orbit1, orbit2, dv attributes.
         Adds itself to orbit1- and orbit2.manoeuvres.
 
@@ -40,16 +41,17 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> int or None:
-        """Evaluate whether a manoeuvre of own type is possible between 2 orbits, and at what r.
+    def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> bool:
+        """Evaluate whether a manoeuvre of own type is possible between 2 orbits.
 
         Args:
             orbit1: orbit1 to compare.
             orbit2: orbit2 to compare.
 
         Returns:
-            None if manoeuvre is not possible.
-            radius in m at which it is possible if it is."""
+            boolean for manoeuvre possibility.
+            also returns False if orbit1 is orbit2
+            or if the manoeuvre simply doesn't make sense (dependant on subtype)."""
         pass
 
     def __eq__(self, other) -> bool:
@@ -83,11 +85,6 @@ class ProRetroGradeManoeuvre(BaseManoeuvre):
     """Bidirectional 1-burn pro- or retrograde manoeuvre at apoapsis or periapsis.
 
     Consult parent documentation for full attribute documentation."""
-    def __init__(self, orbit1: orbits.Orbit, orbit2: orbits.Orbit, insect_r):
-        """Initialize instance with orbit1, orbit2, dv attributes.
-
-        Consult parent method documentation for full documentation."""
-        super().__init__(orbit1, orbit2, insect_r)
 
     def _delta_v(self, insect_r):
         """Compute the manoeuvre's Delta-V cost.
@@ -96,15 +93,62 @@ class ProRetroGradeManoeuvre(BaseManoeuvre):
         return abs(self.orbit1.v_at(insect_r) - self.orbit2.v_at(insect_r))
 
     @staticmethod
-    def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> int or None:
-        """Evaluate whether 1-burn pro- or retrograde manoeuvre is possible between 2 orbits, and at what r.
+    def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> bool:
+        """Evaluate whether 1-burn pro- or retrograde manoeuvre is possible between 2 orbits.
 
         Args:
             orbit1: orbit1 to compare.
             orbit2: orbit2 to compare.
 
         Returns:
-            None if manoeuvre is not possible.
-            radius in m at which it is possible if it is."""
-        overlap = orbit1.apsides.intersection(orbit2.apsides)
-        return None if len(overlap) == 0 else overlap.pop()
+            boolean for manoeuvre possibility.
+            also returns False if orbit1 is orbit2."""
+        if orbit1.inclination != orbit2.inclination:
+            return False
+        return len(orbit1.apsides.intersection(orbit2.apsides)) >= 1
+
+
+class InclinationChange(BaseManoeuvre):
+    """Bidirectional 1-burn pure plane change manoeuvre.
+
+    Consult parent documentation for full attribute documentation."""
+
+    def _delta_v(self, insect_r):
+        return mmath.math.cosine_rule(self.orbit1.v_at(insect_r),
+                                      self.orbit2.v_at(insect_r),
+                                      abs(self.orbit1.inclination - self.orbit2.inclination))
+
+    @staticmethod
+    def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> bool:
+        """Evaluate whether 1-burn pure plane change manoeuvre is possible between 2 orbits.
+
+        Args:
+            orbit1: orbit1 to compare.
+            orbit2: orbit2 to compare.
+
+        Returns:
+            boolean for manoeuvre possibility.
+            also returns False if orbit1 is orbit2 or if the orbits share an inclination already."""
+        return orbit1.apsides == orbit2.apsides and orbit1.inclination != orbit2.inclination
+
+
+class InclinationAndProRetroGradeManoeuvre(InclinationChange):
+    """Bidirectional 1-burn pro- or retrograde combined with plane change manoeuvre at apoapsis or periapsis.
+
+    Consult parent documentation for full attribute documentation."""
+
+    @staticmethod
+    def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> bool:
+        """Evaluate whether 1-burn pro- or retrograde combined with plane change manoeuvre at apoapsis or periapsis
+        is possible between 2 orbits.
+
+            Args:
+                orbit1: orbit1 to compare.
+                orbit2: orbit2 to compare.
+
+            Returns:
+                boolean for manoeuvre possibility.
+                also returns False if orbit1 is orbit2 or if the orbits share an inclination already."""
+        if orbit1.inclination == orbit2.inclination:
+            return False
+        return len(orbit1.apsides.intersection(orbit2.apsides)) >= 1
