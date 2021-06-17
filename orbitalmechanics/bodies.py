@@ -78,7 +78,7 @@ class CentralBodyInOrbit(CentralBody):
                  radius: int,
                  lowest_orbit_from_surface: int = 0,
                  mu: float = None,
-                 orbit: orbits.Orbit = None):
+                 orbit: orbits.Orbit = None):  # FIXME: orbit should not be optional
         """Initialize instance with orbit, hill_sphere_radius, max_viable_orbit, and superclass attributes."""
         super().__init__(mass, radius, lowest_orbit_from_surface, mu)
         self.orbit = orbit
