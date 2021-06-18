@@ -3,6 +3,8 @@ import orbitalmechanics.orbits as orbits
 import orbitalmechanics.manoeuvres as manoeuvres
 import orbitalmechanics.orbitcollections as orbitcollections
 
+import datetime
+
 
 sun = bodies.CentralBody(1.989E30,
                          696349999,
@@ -21,7 +23,8 @@ earth = bodies.CentralBodyInOrbit(5.9736E24,
 
 if __name__ == "__main__":
     print("""Below are the calculations for the Delta-V cost of a simple example mission from
-the kennedy space center (28 degree inclination) to a geostationary orbit through a 200km LEO parking orbit.\n""")
+the kennedy space center (28 degree inclination) to a geostationary orbit (0 degree inclination)
+through a 200km LEO parking orbit.\n""")
 
     leo = orbits.Orbit(earth, a=earth.add_radius(200000), e=0, i=28)
     gto = orbits.Orbit(earth, a=24367500, e=0.730337539, i=28)
@@ -31,10 +34,18 @@ the kennedy space center (28 degree inclination) to a geostationary orbit throug
     gto_to_geo = manoeuvres.InclinationAndProRetroGradeManoeuvre(gto, geo, gto.apsides.intersection(geo.apsides).pop())
 
     print(f"Costs approx. {leo_to_gto.dv + gto_to_geo.dv} m/s Delta-V.", end="\n\n")
-
     # Example of how to compute all orbits in 1 inclination, and all possible manoeuvres between them.
-    possible_orbits = orbitcollections.OrbitCollection(earth, [manoeuvres.ProRetroGradeManoeuvre])
+    possible_orbits = orbitcollections.OrbitCollection(earth,
+                                                       [manoeuvres.InclinationChange,
+                                                        manoeuvres.InclinationAndProRetroGradeManoeuvre,
+                                                        manoeuvres.ProRetroGradeManoeuvre])
 
-    possible_orbits.create_orbits(100, [150000, 20000000])
+    print(f"Start orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
+
+    possible_orbits.create_orbits(5, [150000, 20000000], 5)
+
+    print(f"Finish orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
     possible_orbits.compute_all_manoeuvres()
+
+    print(f"Finish manoeuvre generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
