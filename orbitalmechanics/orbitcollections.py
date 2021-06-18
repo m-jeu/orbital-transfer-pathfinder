@@ -2,6 +2,8 @@ import orbitalmechanics.bodies as bodies
 import orbitalmechanics.orbits as orbits
 import orbitalmechanics.manoeuvres as manoeuvres
 
+import loadingbar.loadingbar as loadingbar
+
 
 class OrbitCollection:
     """A collection of orbits around 1 central body.
@@ -70,12 +72,18 @@ class OrbitCollection:
         for i in range(0, 181, inclination_increment):
             self._create_orbits_on_one_inclination(radia, i)
 
-    def compute_all_manoeuvres(self):
+    def compute_all_manoeuvres(self, visualize: bool = False):
         """Compute all possible
          manoeuvres between all orbits that share an apside.
 
-        Manoeuvres assign themselves to corresponding orbits, so no return value."""
+        Manoeuvres assign themselves to corresponding orbits, so no return value.
+
+        Args:
+            visualize: whether the progress should be visualised by loadingbar.LoadingBar."""
+        # The 'else None' doesn't really change anything, but it just prevents a pointless Warning from showing up.
+        lb = loadingbar.LoadingBar(len(self.apside_map)) if visualize else None
         for r, orbits in self.apside_map.items():
+            if visualize: lb.increment()
             for i in range(len(orbits)):
                 for j in range(i + 1, len(orbits)):
                     for manoeuvre_type in self.manoeuvre_types:
