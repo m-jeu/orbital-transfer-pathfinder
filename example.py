@@ -46,6 +46,6 @@ through a 200km LEO parking orbit.\n""")
 
     print(f"Finish orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-    possible_orbits.compute_all_manoeuvres()
+    possible_orbits.compute_all_manoeuvres(True)
 
     print(f"Finish manoeuvre generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
