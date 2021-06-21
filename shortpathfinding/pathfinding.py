@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import typing
+
 import abc
 
 
@@ -7,7 +9,7 @@ class PathFindingNode(metaclass=abc.ABCMeta):
     """Abstract node in a graph for pathfinding."""
 
     @abc.abstractmethod
-    def get_all_edges(self) -> list[PathFindingEdge]:
+    def get_all_edges(self) -> typing.Iterable[PathFindingEdge]:
         """Get all edges connected to this node.
 
         Returns:

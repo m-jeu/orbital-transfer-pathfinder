@@ -2,6 +2,7 @@ import orbitalmechanics.bodies as bodies
 import orbitalmechanics.orbits as orbits
 import orbitalmechanics.manoeuvres as manoeuvres
 import orbitalmechanics.orbitcollections as orbitcollections
+import shortpathfinding.dijkstras_algorithm
 
 import datetime
 
@@ -49,3 +50,19 @@ through a 200km LEO parking orbit.\n""")
     possible_orbits.compute_all_manoeuvres(True)
 
     print(f"Finish manoeuvre generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
+
+    print(f"Find shortest path from orbits[0] to orbits[450]: {datetime.datetime.now().strftime('%H:%M:%S')}")
+
+    dijkstra_graph = shortpathfinding.dijkstras_algorithm.DijkstraGraph(possible_orbits.orbits)
+
+    start = dijkstra_graph.nodes[0]
+    target = dijkstra_graph.nodes[450]
+
+    dist, path = dijkstra_graph.find_shortest_path(start, target)
+
+    print(f"Found shortest path: {datetime.datetime.now().strftime('%H:%M:%S')}")
+    print(f"Distance: {dist} m/s Delta-V")
+    print(f"Start: {start}")
+    print(f"Target: {target}")
+    for m in path:
+        print(m)

@@ -3,9 +3,10 @@ import abc
 
 import mmath.math
 import orbitalmechanics.orbits as orbits
+import shortpathfinding.dijkstras_algorithm
 
 
-class BaseManoeuvre(metaclass=abc.ABCMeta):
+class BaseManoeuvre(shortpathfinding.dijkstras_algorithm.DijkstraEdge, metaclass=abc.ABCMeta):
     """An abstract bidirectional 1-burn manoeuvre between 2 orbits with a certain Delta-V cost.
 
     Attributes:
@@ -38,6 +39,13 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
         Args:
             origin: orbit on one 'end' of the manoeuvre, whose other side should be fetched."""
         return self.orbit2 if origin == self.orbit1 else self.orbit1  # TODO: Consider implementing exception.
+
+    def get_weight(self) -> float:
+        """Get the Delta-V of this manoeuvre as weight for pathfinding.
+
+        Returns:
+            Delta-V of this manoeuvre."""
+        return self.dv
 
     @staticmethod
     @abc.abstractmethod
@@ -75,7 +83,7 @@ class BaseManoeuvre(metaclass=abc.ABCMeta):
         return hash((self.orbit1, self.orbit2))
 
     def __str__(self) -> str:
-        return f"{self.dv}m/s manoeuvre between {self.orbit1} and {self.orbit2}."
+        return f"{self.dv}m/s between {self.orbit1} and {self.orbit2}."
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -107,6 +115,9 @@ class ProRetroGradeManoeuvre(BaseManoeuvre):
             return False
         return len(orbit1.apsides.intersection(orbit2.apsides)) >= 1
 
+    def __str__(self) -> str:
+        return "Pro- Retrograde " + super().__str__()
+
 
 class InclinationChange(BaseManoeuvre):
     """Bidirectional 1-burn pure plane change manoeuvre.
@@ -131,6 +142,9 @@ class InclinationChange(BaseManoeuvre):
             also returns False if orbit1 is orbit2 or if the orbits share an inclination already."""
         return orbit1.apsides == orbit2.apsides and orbit1.inclination != orbit2.inclination
 
+    def __str__(self) -> str:
+        return "Inclination Change " + super().__str__()
+
 
 class InclinationAndProRetroGradeManoeuvre(InclinationChange):
     """Bidirectional 1-burn pro- or retrograde combined with plane change manoeuvre at apoapsis or periapsis.
@@ -152,3 +166,6 @@ class InclinationAndProRetroGradeManoeuvre(InclinationChange):
         if orbit1.inclination == orbit2.inclination:
             return False
         return len(orbit1.apsides.intersection(orbit2.apsides)) >= 1
+
+    def __str__(self) -> str:
+        return "Pro- Retrograde + Inclination Change " + super().__str__()

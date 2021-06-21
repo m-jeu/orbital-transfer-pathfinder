@@ -1,8 +1,10 @@
 from __future__ import annotations
 import abc
 import heapq
+import typing
 
 import shortpathfinding.pathfinding
+from shortpathfinding.pathfinding import PathFindingEdge, PathFindingNode
 
 
 class DijkstraNode(shortpathfinding.pathfinding.PathFindingNode, metaclass=abc.ABCMeta):
@@ -55,6 +57,12 @@ class DijkstraEdge(shortpathfinding.pathfinding.PathFindingEdge, metaclass=abc.A
 class DijkstraGraph(shortpathfinding.pathfinding.PathFindingGraph):
     """Graph for pathfinding purposes with Dijkstra's algorithm."""
 
+    def _reset_nodes(self):
+        """Reset lowest_distance and discovered_by for all nodes"""
+        for node in self.nodes:
+            node.lowest_distance = float('inf')
+            node.discovered_through = None
+
     def find_shortest_path(self, start: DijkstraNode,
                            target: DijkstraNode) -> tuple[float, list[DijkstraEdge]]:
         """Find the shortest path through the graph using Dijkstra's algorithm.
@@ -88,7 +96,9 @@ class DijkstraGraph(shortpathfinding.pathfinding.PathFindingGraph):
             completed_nodes.add(node)
 
         # Go backwards from target to collect shortest path
-        node, result = target, []
+        node, result = target, [target.discovered_through]
         while (node := node.discovered_through.get_other(node)) != start:
             result.append(node.discovered_through)
-        return target.lowest_distance, result[::-1]  # TODO: Reset nodes for later use.
+        path_distance_temp = target.lowest_distance
+        self._reset_nodes()
+        return path_distance_temp, result[::-1]

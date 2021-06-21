@@ -2,10 +2,9 @@
 #from typing import TYPE_CHECKING TODO: Check whether this is necesarry after implementing new features.
 #if TYPE_CHECKING:
 import orbitalmechanics.manoeuvres as manoeuvres
-
-
 import orbitalmechanics.bodies as bodies
 import mmath.math
+import shortpathfinding.dijkstras_algorithm
 
 
 class KeplerElementError(Exception):
@@ -17,7 +16,7 @@ class KeplerElementError(Exception):
 in the keyword argument.""")
 
 
-class Orbit:
+class Orbit(shortpathfinding.dijkstras_algorithm.DijkstraNode):
     """An orbit around a central body.
 
     Attributes:
@@ -42,6 +41,7 @@ class Orbit:
         Raises:
             KeplerElementError: when kepler_elements arguments are not being passed properly.
         """
+        super().__init__()
         self.central_body: bodies.CentralBody = central_body
         self.manoeuvres: set[manoeuvres.BaseManoeuvre] = set()
         if apo is not None and per is not None:  # Compute a/e from apo/per
@@ -94,7 +94,7 @@ class Orbit:
         return (self.central_body.mu * ((2 / r) - (1 / self.sm_axis))) ** 0.5
 
     def __str__(self) -> str:
-        return f"Orbit: apoapsis={self.apogee}m periapsis={self.perigee}m."
+        return f"(Orbit: a={self.apogee}m p={self.perigee}m i={self.inclination} degrees)"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -117,3 +117,10 @@ class Orbit:
         Returns:
             hash."""
         return hash((self.apogee, self.perigee, self.inclination))
+
+    def get_all_edges(self) -> set[manoeuvres.BaseManoeuvre]:
+        """Get all manoeuvres connected to this orbit.
+
+        Returns:
+            all manoeuvres connected to this orbit."""
+        return self.manoeuvres
