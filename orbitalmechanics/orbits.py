@@ -45,7 +45,10 @@ class Orbit(shortpathfinding.dijkstras_algorithm.DijkstraNode):
         self.central_body: bodies.CentralBody = central_body
         self.manoeuvres: set[manoeuvres.BaseManoeuvre] = set()
         if apo is not None and per is not None:  # Compute a/e from apo/per
-            self.apogee, self.perigee = apo, per
+            if apo > per:
+                self.apogee, self.perigee = apo, per
+            else:
+                self.apogee, self.perigee = per, apo
             self.sm_axis, self.eccentricity = Orbit._a_and_e(self.apogee, self.perigee)
         elif a is not None and e is not None:  # Compute apo/per from a/e
             self.sm_axis, self.eccentricity = a, e
