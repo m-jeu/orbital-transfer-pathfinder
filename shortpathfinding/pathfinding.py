@@ -59,6 +59,7 @@ class PathFindingGraph(metaclass=abc.ABCMeta):
         Args:
             start: the node from which the shortest path needs to be searched.
             target: the node to which the shortest path needs to be searched.
+            visualize: whether the progress should be visualised by loadingbar.LoadingBar.
 
         Returns:
             tuple that contains:
