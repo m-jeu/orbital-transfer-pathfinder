@@ -4,7 +4,7 @@ import heapq
 import typing
 
 import shortpathfinding.pathfinding
-from shortpathfinding.pathfinding import PathFindingEdge, PathFindingNode
+import loadingbar.loadingbar
 
 
 class DijkstraNode(shortpathfinding.pathfinding.PathFindingNode, metaclass=abc.ABCMeta):
@@ -64,7 +64,8 @@ class DijkstraGraph(shortpathfinding.pathfinding.PathFindingGraph):
             node.discovered_through = None
 
     def find_shortest_path(self, start: DijkstraNode,
-                           target: DijkstraNode) -> tuple[float, list[DijkstraEdge]]:
+                           target: DijkstraNode,
+                           visualize: bool = False) -> tuple[float, list[DijkstraEdge]]:
         """Find the shortest path through the graph using Dijkstra's algorithm.
 
         Args:
@@ -77,6 +78,8 @@ class DijkstraGraph(shortpathfinding.pathfinding.PathFindingGraph):
                 1: list containing every step of the shortest path, in order."""
 
         # Setup
+        lb = loadingbar.loadingbar.LoadingBar(len(self.nodes)) if visualize else None
+
         start.lowest_distance = 0
         completed_nodes = set()
 
@@ -86,14 +89,16 @@ class DijkstraGraph(shortpathfinding.pathfinding.PathFindingGraph):
         # Algorithm
         while len(priority_queue) != 0:
             node = heapq.heappop(priority_queue)
-            for edge in node.get_all_edges():
-                other_node = edge.get_other(node)
-                if other_node not in completed_nodes:
-                    discovered_distance = node.lowest_distance + edge.get_weight()
-                    if discovered_distance < other_node.lowest_distance:
-                        other_node.lowest_distance, other_node.discovered_through = discovered_distance, edge
-                        heapq.heappush(priority_queue, other_node)
-            completed_nodes.add(node)
+            if node not in completed_nodes:
+                for edge in node.get_all_edges():
+                    other_node = edge.get_other(node)
+                    if other_node not in completed_nodes:
+                        discovered_distance = node.lowest_distance + edge.get_weight()
+                        if discovered_distance < other_node.lowest_distance:
+                            other_node.lowest_distance, other_node.discovered_through = discovered_distance, edge
+                            heapq.heappush(priority_queue, other_node)
+                completed_nodes.add(node)
+                if visualize: lb.increment()
 
         # Go backwards from target to collect shortest path
         node, result = target, [target.discovered_through]

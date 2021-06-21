@@ -58,7 +58,7 @@ through a 200km LEO parking orbit.\n""")
     start = dijkstra_graph.nodes[0]
     target = dijkstra_graph.nodes[450]
 
-    dist, path = dijkstra_graph.find_shortest_path(start, target)
+    dist, path = dijkstra_graph.find_shortest_path(start, target, True)
 
     print(f"Found shortest path: {datetime.datetime.now().strftime('%H:%M:%S')}")
     print(f"Distance: {dist} m/s Delta-V")

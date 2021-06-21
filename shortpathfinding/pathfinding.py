@@ -52,7 +52,8 @@ class PathFindingGraph(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def find_shortest_path(self, start: PathFindingNode,
-                           target: PathFindingNode) -> tuple[float, list[PathFindingEdge]]:
+                           target: PathFindingNode,
+                           visualize: bool = False) -> tuple[float, list[PathFindingEdge]]:
         """Find the shortest path through the graph.
 
         Args:
