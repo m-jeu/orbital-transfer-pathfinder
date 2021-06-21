@@ -11,6 +11,8 @@ class OrbitCollection:
     Attributes:
         central_body: the body the orbits are around.
         apside_map: dictionary with apsides as keys, and list containing every orbit with that apside as value.
+        inclination_map:
+            dictionary with inclinations as keys, and list containing every orbit with that inclination as value.
         orbits: all the orbits in this collection.
         manoeuvre_types: all types of manoeuvres (subclass of Manoeuvre) that can be performed between self.orbits."""
 
@@ -21,6 +23,7 @@ class OrbitCollection:
             central_body: the body the orbits are around."""
         self.central_body = central_body
         self.apside_map = {}
+        self.inclination_map = {}
         self.orbits = set()
         self.manoeuvre_types = manoeuvre_types
 
@@ -31,10 +34,14 @@ class OrbitCollection:
             orbit: orbit to add."""
         self.orbits.add(orbit)
         for apside in orbit.apsides:
-            if apside not in self.apside_map:
+            if apside not in self.apside_map:  # FIXME: Switch around with else
                 self.apside_map[apside] = [orbit]
             else:
                 self.apside_map[apside].append(orbit)
+        if orbit.inclination in self.inclination_map:
+            self.inclination_map[orbit.inclination].append(orbit)
+        else:
+            self.inclination_map[orbit.inclination] = [orbit]
 
     def _create_orbits_on_one_inclination(self,
                                           radia: list[int],
@@ -58,6 +65,7 @@ class OrbitCollection:
         """Generate a significant amount of possible orbits around the CentralBody, divided into sections.
         Calls CentralBody.compute_radia with central_body.min_viable_orbit_r and central_body.max_viable_orbit_r as
         extra limits. Consult CentralBody.compute_radia for detailed section_limiters information.
+        Also adds apsides/inclinations of orbits already in self.orbits.
         Will call self._create_orbits_on_one_inclination for every inclination (0 - 180).
 
         Args:
@@ -69,8 +77,9 @@ class OrbitCollection:
                 how big the gap between inclinations between orbits should be.
                 1 will create orbits at 180 different inclinations, 5 will create orbits at 36 different inclinations.
                 """
-        radia = self.central_body.compute_radia(permutations_per_section, section_limiters)
-        for i in range(0, 181, inclination_increment):
+        radia = self.central_body.compute_radia(permutations_per_section, section_limiters) + \
+                list(self.apside_map.keys())
+        for i in list(range(0, 181, inclination_increment)) + list(self.inclination_map.keys()):
             self._create_orbits_on_one_inclination(radia, i)
 
     def compute_all_manoeuvres(self, visualize: bool = False):
