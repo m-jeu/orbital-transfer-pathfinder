@@ -41,9 +41,13 @@ through a 200km LEO parking orbit.\n""")
                                                         manoeuvres.InclinationAndProRetroGradeManoeuvre,
                                                         manoeuvres.ProRetroGradeManoeuvre])
 
+
     print(f"Start orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-    possible_orbits.create_orbits(5, [earth.add_radius(150000), earth.add_radius(20000000)], 5)
+    possible_orbits.add_orbit(leo)
+    possible_orbits.add_orbit(geo)
+
+    possible_orbits.create_orbits(10, [earth.add_radius(150000), earth.add_radius(20000000)], 5)
 
     print(f"Finish orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
@@ -55,19 +59,12 @@ through a 200km LEO parking orbit.\n""")
 
     dijkstra_graph = shortpathfinding.dijkstras_algorithm.DijkstraGraph(list(possible_orbits.orbits))
 
-    for orbit in possible_orbits.orbits:
-        if orbit.apogee == earth.add_radius(150000) and orbit.perigee == earth.add_radius(150000) and \
-                orbit.inclination == 0:
-            start = orbit
-        elif orbit.apogee == earth.add_radius(20000000) and orbit.perigee == earth.add_radius(20000000) and \
-                orbit.inclination == 60:
-            target = orbit
+    dist, path = dijkstra_graph.find_shortest_path(leo, geo, 5, True)
 
-    dist, path = dijkstra_graph.find_shortest_path(start, target, virtual_cost_per_edge=5, visualize=True)
 
     print(f"Found shortest path: {datetime.datetime.now().strftime('%H:%M:%S')}")
     print(f"Distance: {dist} m/s Delta-V")
-    print(f"Start: {start}")
-    print(f"Target: {target}")
+    print(f"Start: {leo}")
+    print(f"Target: {geo}")
     for m in path:
         print(m)
