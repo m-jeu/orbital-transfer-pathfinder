@@ -21,7 +21,7 @@ class OrbitCollection:
             central_body: the body the orbits are around."""
         self.central_body = central_body
         self.apside_map = {}
-        self.orbits = []
+        self.orbits = set()
         self.manoeuvre_types = manoeuvre_types
 
     def add_orbit(self, orbit: orbits.Orbit):
@@ -29,7 +29,7 @@ class OrbitCollection:
 
         Args:
             orbit: orbit to add."""
-        self.orbits.append(orbit)
+        self.orbits.add(orbit)
         for apside in orbit.apsides:
             if apside not in self.apside_map:
                 self.apside_map[apside] = [orbit]

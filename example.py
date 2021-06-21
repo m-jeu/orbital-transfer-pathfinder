@@ -43,7 +43,7 @@ through a 200km LEO parking orbit.\n""")
 
     print(f"Start orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-    possible_orbits.create_orbits(10, [earth.add_radius(150000), earth.add_radius(20000000)], 5)
+    possible_orbits.create_orbits(5, [earth.add_radius(150000), earth.add_radius(20000000)], 5)
 
     print(f"Finish orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
@@ -53,7 +53,7 @@ through a 200km LEO parking orbit.\n""")
 
     print(f"Find shortest path from orbits[0] to orbits[450]: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-    dijkstra_graph = shortpathfinding.dijkstras_algorithm.DijkstraGraph(possible_orbits.orbits)
+    dijkstra_graph = shortpathfinding.dijkstras_algorithm.DijkstraGraph(list(possible_orbits.orbits))
 
     for orbit in possible_orbits.orbits:
         if orbit.apogee == earth.add_radius(150000) and orbit.perigee == earth.add_radius(150000) and \
