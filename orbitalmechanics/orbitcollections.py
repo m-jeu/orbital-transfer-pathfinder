@@ -29,6 +29,7 @@ class OrbitCollection:
 
         Args:
             orbit: orbit to add."""
+        self.orbits.append(orbit)
         for apside in orbit.apsides:
             if apside not in self.apside_map:
                 self.apside_map[apside] = [orbit]
