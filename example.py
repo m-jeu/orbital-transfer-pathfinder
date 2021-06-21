@@ -43,7 +43,7 @@ through a 200km LEO parking orbit.\n""")
 
     print(f"Start orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-    possible_orbits.create_orbits(5, [150000, 20000000], 5)
+    possible_orbits.create_orbits(10, [earth.add_radius(150000), earth.add_radius(20000000)], 5)
 
     print(f"Finish orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
@@ -55,10 +55,15 @@ through a 200km LEO parking orbit.\n""")
 
     dijkstra_graph = shortpathfinding.dijkstras_algorithm.DijkstraGraph(possible_orbits.orbits)
 
-    start = dijkstra_graph.nodes[0]
-    target = dijkstra_graph.nodes[450]
+    for orbit in possible_orbits.orbits:
+        if orbit.apogee == earth.add_radius(150000) and orbit.perigee == earth.add_radius(150000) and \
+                orbit.inclination == 0:
+            start = orbit
+        elif orbit.apogee == earth.add_radius(20000000) and orbit.perigee == earth.add_radius(20000000) and \
+                orbit.inclination == 60:
+            target = orbit
 
-    dist, path = dijkstra_graph.find_shortest_path(start, target, True)
+    dist, path = dijkstra_graph.find_shortest_path(start, target, virtual_cost_per_edge=5, visualize=True)
 
     print(f"Found shortest path: {datetime.datetime.now().strftime('%H:%M:%S')}")
     print(f"Distance: {dist} m/s Delta-V")
