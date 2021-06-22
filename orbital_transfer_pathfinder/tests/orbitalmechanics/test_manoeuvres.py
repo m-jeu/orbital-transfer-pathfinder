@@ -57,7 +57,21 @@ class TestProRetroGradeManoeuvre(TestCase):
                                         3.986004418E14)
 
     def test__delta_v(self):
-        self.fail()
+        orbit_1 = orbits.Orbit(self.earth,
+                               a=6531000,
+                               e=0,
+                               i=0)
+
+        orbit_2 = orbits.Orbit(self.earth,
+                               apo=255254440,
+                               per=6531000,
+                               i=0)
+
+        manoeuvre = manoeuvres.ProRetroGradeManoeuvre(orbit_1, orbit_2, 6531000)
+
+        self.assertAlmostEqual(manoeuvre.dv, 3097.2756082,
+                               msg="""ProRetroGradeManoeuvre should be able to calculate Delta-V through
+speed difference of orbits using vis-viva equation.""")
 
     def test_evaluate(self):
         orbit_1_testcase_1 = orbits.Orbit(self.earth,
@@ -115,10 +129,63 @@ class TestInclinationChange(TestCase):
                                         3.986004418E14)
 
     def test__delta_v(self):
-        self.fail()
+        orbit_1 = orbits.Orbit(self.earth,
+                               a=6531000,
+                               e=0,
+                               i=0)
+
+        orbit_2 = orbits.Orbit(self.earth,
+                               a=6531000,
+                               e=0,
+                               i=60)
+
+        manoeuvre = manoeuvres.InclinationChange(orbit_1, orbit_2, 6531000)
+
+        self.assertAlmostEqual(manoeuvre.dv, orbit_1.v_at(6531000),
+                               msg="""InclinationChange should be able to calculate Delta-V through cosine_rule
+and speed difference calculated through vis-viva equation.""")
 
     def test_evaluate(self):
-        self.fail()
+        orbit_1_testcase_1 = orbits.Orbit(self.earth,
+                                          apo=15000,
+                                          per=25000,
+                                          i=0)
+
+        orbit_2_testcase_1 = orbits.Orbit(self.earth,
+                                          apo=15000,
+                                          per=25000,
+                                          i=40)
+
+        self.assertTrue(manoeuvres.InclinationChange.evaluate(orbit_1_testcase_1, orbit_2_testcase_1),
+                        msg="InclinationChange should evaluate to True between orbits that share all their apsides."
+                            " but have different inclination.")
+
+        orbit_1_testcase_2 = orbits.Orbit(self.earth,
+                                          apo=15000,
+                                          per=25000,
+                                          i=0)
+
+        orbit_2_testcase_2 = orbits.Orbit(self.earth,
+                                          apo=15000,
+                                          per=25000,
+                                          i=0)
+
+        self.assertFalse(manoeuvres.InclinationChange.evaluate(orbit_1_testcase_2, orbit_2_testcase_2),
+                         msg="InclinationChange should evaluate to False between orbits that share all their apsides."
+                             " and their inclination.")
+
+        orbit_1_testcase_3 = orbits.Orbit(self.earth,
+                                          apo=15000,
+                                          per=25000,
+                                          i=40)
+
+        orbit_2_testcase_3 = orbits.Orbit(self.earth,
+                                          apo=20000,
+                                          per=30000,
+                                          i=0)
+
+        self.assertFalse(manoeuvres.InclinationChange.evaluate(orbit_1_testcase_3, orbit_2_testcase_3),
+                         msg="InclinationChange should evaluate to False between orbits that don't share an apside.")
 
 
 class TestInclinationAndProRetroGradeManoeuvre(TestCase):
@@ -130,7 +197,64 @@ class TestInclinationAndProRetroGradeManoeuvre(TestCase):
                                         3.986004418E14)
 
     def test__delta_v(self):
-        self.fail()
+        orbit_1 = orbits.Orbit(self.earth,
+                               apo=1000000,
+                               per=1000,
+                               i=0)
+
+        orbit_2 = orbits.Orbit(self.earth,
+                               a=1000000,
+                               e=0,
+                               i=60)
+
+        manoeuvre = manoeuvres.InclinationAndProRetroGradeManoeuvre(orbit_1, orbit_2, 1000000)
+
+        self.assertAlmostEqual(manoeuvre.dv, 19534.06764865,
+                               msg="""InclinationChangeAndProRetroGradeManoeuvre should be able to calculate
+Delta-V through speed difference of orbits using vis-viva equation and cosine-rule.""")
 
     def test_evaluate(self):
-        self.fail()
+        orbit_1_testcase_1 = orbits.Orbit(self.earth,
+                                          apo=50000,
+                                          per=10000,
+                                          i=30)
+
+        orbit_2_testcase_1 = orbits.Orbit(self.earth,
+                                          apo=50000,
+                                          per=20000,
+                                          i=60)
+
+        self.assertTrue(manoeuvres.InclinationAndProRetroGradeManoeuvre.evaluate(orbit_1_testcase_1,
+                                                                                 orbit_2_testcase_1),
+                        msg="InclinationAndProRetroGradeManoeuvre should evaluate to True for orbits that share"
+                            " an apside, and don't share their inclination.")
+
+        orbit_1_testcase_2 = orbits.Orbit(self.earth,
+                                          apo=50000,
+                                          per=10000,
+                                          i=30)
+
+        orbit_2_testcase_2 = orbits.Orbit(self.earth,
+                                          apo=50000,
+                                          per=20000,
+                                          i=30)
+
+        self.assertFalse(manoeuvres.InclinationAndProRetroGradeManoeuvre.evaluate(orbit_1_testcase_2,
+                                                                                  orbit_2_testcase_2),
+                         msg="InclinationAndProRetroGradeManoeuvre should evaluate to False for orbits that share"
+                             " their inclination.")
+
+        orbit_1_testcase_3 = orbits.Orbit(self.earth,
+                                          apo=40000,
+                                          per=10000,
+                                          i=60)
+
+        orbit_2_testcase_3 = orbits.Orbit(self.earth,
+                                          apo=50000,
+                                          per=20000,
+                                          i=30)
+
+        self.assertFalse(manoeuvres.InclinationAndProRetroGradeManoeuvre.evaluate(orbit_1_testcase_2,
+                                                                                  orbit_2_testcase_2),
+                         msg="InclinationAndProRetroGradeManoeuvre should evaluate to False for orbits that"
+                             " don't share an apside.")
