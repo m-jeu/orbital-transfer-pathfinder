@@ -84,7 +84,7 @@ class Orbit(shortpathfinding.dijkstras_algorithm.DijkstraNode):
             tuple that contains:
                 0: orbit semi-major axis in m.
                 1: orbit eccentricity."""
-        return mmath.math.v_avg(apo, per), 1 - (2 / (apo / per) + 1)
+        return mmath.math.v_avg(apo, per), 1 - (2 / ((apo / per) + 1))
 
     def v_at(self, r) -> float:
         """Compute the speed relative to the central body at a certain point in the orbit.
