@@ -22,5 +22,5 @@ class Test(TestCase):
                                msg="""cosine_rule() should be able to get triangle side length based on 2 other sides
                                and angle measured in degrees.""")
 
-        self.assertNotEqual(mmath.math.cosine_rule(6.5, 9.4, 2.28638132), 14.51827859,
-                            msg="cosine_rule() should not measure angle_dif in radians.")
+        self.assertNotAlmostEqual(mmath.math.cosine_rule(6.5, 9.4, 2.28638132), 14.51827859,
+                                  msg="cosine_rule() should not measure angle_dif in radians.")
