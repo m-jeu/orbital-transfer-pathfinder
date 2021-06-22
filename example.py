@@ -47,7 +47,7 @@ through a 200km LEO parking orbit.\n""")
     possible_orbits.add_orbit(leo)
     possible_orbits.add_orbit(geo)
 
-    possible_orbits.create_orbits(10, [earth.add_radius(150000), earth.add_radius(20000000)], 5)
+    possible_orbits.create_orbits(5, [earth.add_radius(150000), earth.add_radius(20000000)], 5)
 
     print(f"Finish orbit generation: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
