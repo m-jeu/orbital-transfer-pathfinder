@@ -62,4 +62,5 @@ class TestOrbit(TestCase):
         gto = orbits.Orbit(earth, a=24367500, e=0.730337539)
 
         self.assertAlmostEqual(gto.v_at(gto.perigee), 10245.155848246606,
-                               msg="Orbit.v_at should be able to compute speed at certain point in orbit.")
+                               msg="Orbit.v_at should be able to compute speed at certain point in orbit using "
+                                   "vis-viva equation.")
