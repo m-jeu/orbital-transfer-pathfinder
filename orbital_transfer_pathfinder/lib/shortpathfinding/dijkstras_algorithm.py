@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import abc
 import heapq
-import typing
 
-import shortpathfinding.pathfinding
-import loadingbar.loadingbar
+import orbital_transfer_pathfinder.lib.shortpathfinding.pathfinding as pathfinding
+import orbital_transfer_pathfinder.lib.loadingbar.loadingbar as loadingbar
 
 
-class DijkstraNode(shortpathfinding.pathfinding.PathFindingNode, metaclass=abc.ABCMeta):
+class DijkstraNode(pathfinding.PathFindingNode, metaclass=abc.ABCMeta):
     """Abstract node in graph for pathfinding with Dijkstra's algorithm.
 
     Can be used for many optimization / pathfinding problems by extending
@@ -44,7 +43,7 @@ class DijkstraNode(shortpathfinding.pathfinding.PathFindingNode, metaclass=abc.A
         pass
 
 
-class DijkstraEdge(shortpathfinding.pathfinding.PathFindingEdge, metaclass=abc.ABCMeta):
+class DijkstraEdge(pathfinding.PathFindingEdge, metaclass=abc.ABCMeta):
     """Abstract edge in graph for pathfinding with Dijkstra's algorithm.
 
     Can be used for many optimization / pathfinding problems by extending
@@ -55,7 +54,7 @@ class DijkstraEdge(shortpathfinding.pathfinding.PathFindingEdge, metaclass=abc.A
     pass
 
 
-class DijkstraGraph(shortpathfinding.pathfinding.PathFindingGraph):
+class DijkstraGraph(pathfinding.PathFindingGraph):
     """Graph for pathfinding purposes with Dijkstra's algorithm."""
 
     def _reset_nodes(self):
@@ -85,7 +84,7 @@ class DijkstraGraph(shortpathfinding.pathfinding.PathFindingGraph):
                 1: list containing every step of the shortest path, in order."""
 
         # Setup
-        lb = loadingbar.loadingbar.LoadingBar(len(self.nodes)) if visualize else None
+        lb = loadingbar.LoadingBar(len(self.nodes)) if visualize else None
 
         start.lowest_distance = 0
         completed_nodes = set()

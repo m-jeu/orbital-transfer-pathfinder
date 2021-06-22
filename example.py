@@ -1,8 +1,9 @@
-import orbitalmechanics.bodies as bodies
-import orbitalmechanics.orbits as orbits
-import orbitalmechanics.manoeuvres as manoeuvres
-import orbitalmechanics.orbitcollections as orbitcollections
-import shortpathfinding.dijkstras_algorithm
+import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
+import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
+import orbital_transfer_pathfinder.lib.orbitalmechanics.manoeuvres as manoeuvres
+import orbital_transfer_pathfinder.lib.orbitalmechanics.orbitcollections as orbitcollections
+
+import orbital_transfer_pathfinder.lib.shortpathfinding as shortpathfinding
 
 import datetime
 

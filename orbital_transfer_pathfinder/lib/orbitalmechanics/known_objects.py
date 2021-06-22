@@ -3,8 +3,8 @@
 # to make life easier for the end user.
 #
 
-import orbitalmechanics.bodies as bodies
-import orbitalmechanics.orbits as orbits
+import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
+import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
 
 
 # Solar system bodies.

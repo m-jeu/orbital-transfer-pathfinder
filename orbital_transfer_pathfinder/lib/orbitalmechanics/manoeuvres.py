@@ -1,12 +1,12 @@
 from __future__ import annotations
 import abc
 
-import mmath.math
-import orbitalmechanics.orbits as orbits
-import shortpathfinding.dijkstras_algorithm
+import orbital_transfer_pathfinder.lib.mmath.math as mmath
+import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
+import orbital_transfer_pathfinder.lib.shortpathfinding.dijkstras_algorithm as dijkstras_algorithm
 
 
-class BaseManoeuvre(shortpathfinding.dijkstras_algorithm.DijkstraEdge, metaclass=abc.ABCMeta):
+class BaseManoeuvre(dijkstras_algorithm.DijkstraEdge, metaclass=abc.ABCMeta):
     """An abstract bidirectional 1-burn manoeuvre between 2 orbits with a certain Delta-V cost.
 
     Attributes:
@@ -125,9 +125,9 @@ class InclinationChange(BaseManoeuvre):
     Consult parent documentation for full attribute documentation."""
 
     def _delta_v(self, insect_r):
-        return mmath.math.cosine_rule(self.orbit1.v_at(insect_r),
-                                      self.orbit2.v_at(insect_r),
-                                      abs(self.orbit1.inclination - self.orbit2.inclination))
+        return mmath.cosine_rule(self.orbit1.v_at(insect_r),
+                                 self.orbit2.v_at(insect_r),
+                                 abs(self.orbit1.inclination - self.orbit2.inclination))
 
     @staticmethod
     def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> bool:

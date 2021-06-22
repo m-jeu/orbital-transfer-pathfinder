@@ -1,10 +1,11 @@
 # To prevent circle import (for typehints) problems
 #from typing import TYPE_CHECKING TODO: Check whether this is necesarry after implementing new features.
 #if TYPE_CHECKING:
-import orbitalmechanics.manoeuvres as manoeuvres
-import orbitalmechanics.bodies as bodies
-import mmath.math
-import shortpathfinding.dijkstras_algorithm
+import orbital_transfer_pathfinder.lib.orbitalmechanics.manoeuvres as manoeuvres
+import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
+import orbital_transfer_pathfinder.lib.mmath.math as mmath
+import orbital_transfer_pathfinder.lib.shortpathfinding.dijkstras_algorithm as dijkstras_algorithm
+
 
 
 class KeplerElementError(Exception):
@@ -16,7 +17,7 @@ class KeplerElementError(Exception):
 in the keyword argument.""")
 
 
-class Orbit(shortpathfinding.dijkstras_algorithm.DijkstraNode):
+class Orbit(dijkstras_algorithm.DijkstraNode):
     """An orbit around a central body.
 
     Attributes:
@@ -84,7 +85,7 @@ class Orbit(shortpathfinding.dijkstras_algorithm.DijkstraNode):
             tuple that contains:
                 0: orbit semi-major axis in m.
                 1: orbit eccentricity."""
-        return mmath.math.v_avg(apo, per), 1 - (2 / ((apo / per) + 1))
+        return mmath.v_avg(apo, per), 1 - (2 / ((apo / per) + 1))
 
     def v_at(self, r) -> float:
         """Compute the speed relative to the central body at a certain point in the orbit.

@@ -1,19 +1,19 @@
 from unittest import TestCase
 
-import orbitalmechanics.bodies
-import orbitalmechanics.orbits
+import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
+import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
 
 class TestCentralBody(TestCase):
 
     def setUp(self):
-        self.test_body_with_mu = orbitalmechanics.bodies.CentralBody(1000000,
-                                                                     10000,
-                                                                     1000,
-                                                                     123.45)
+        self.test_body_with_mu = bodies.CentralBody(1000000,
+                                                    10000,
+                                                    1000,
+                                                    123.45)
 
-        self.test_body_without_mu = orbitalmechanics.bodies.CentralBody(1000000,
-                                                                        10000,
-                                                                        1000)
+        self.test_body_without_mu = bodies.CentralBody(1000000,
+                                                       10000,
+                                                       1000)
 
     def test_constructor(self):
         self.assertEqual(self.test_body_with_mu.mu, 123.45,
@@ -41,17 +41,17 @@ together to determine min_viable_orbit_r.""")
 class TestCentralBodyInOrbit(TestCase):
 
     def setUp(self):
-        test_orbits_central_body = orbitalmechanics.bodies.CentralBody(1000000000,
-                                                                       1000,
-                                                                       0)
+        test_orbits_central_body = bodies.CentralBody(1000000000,
+                                                      1000,
+                                                      0)
 
-        orbit = orbitalmechanics.orbits.Orbit(test_orbits_central_body,
+        orbit = orbits.Orbit(test_orbits_central_body,
                                               a=1000000, e=0.1, i=0)
 
-        self.test_body = orbitalmechanics.bodies.CentralBodyInOrbit(1000,
-                                                                    100,
-                                                                    0,
-                                                                    orbit=orbit)
+        self.test_body = bodies.CentralBodyInOrbit(1000,
+                                                   100,
+                                                   0,
+                                                   orbit=orbit)
 
     def test_constructor(self):
         self.assertAlmostEqual(self.test_body.hill_sphere_radius,
