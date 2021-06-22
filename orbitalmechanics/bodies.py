@@ -111,6 +111,7 @@ class CentralBodyInOrbit(CentralBody):
 
         Returns:
             ((#(section_limit) - 1) * permutations_per_section) radia.
+            amount of computed radia could differ by 1 because of integer division.
 
         For example, when dividing into 3 sections:
         10.000 <-> 100.000 <-> 500.000 <-> 1.000.000.
