@@ -93,8 +93,7 @@ class DijkstraGraph(pathfinding.PathFindingGraph):
         heapq.heapify(priority_queue)  # list like heap. Only heapq operations should be used on priority_queue.
 
         # Algorithm
-        while len(priority_queue) != 0:
-            node = heapq.heappop(priority_queue)
+        while (node := heapq.heappop(priority_queue)) != target:
             if node not in completed_nodes:
                 for edge in node.get_all_edges():
                     other_node = edge.get_other(node)
