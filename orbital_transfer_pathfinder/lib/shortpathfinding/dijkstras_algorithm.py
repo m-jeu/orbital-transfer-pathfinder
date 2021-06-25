@@ -35,6 +35,16 @@ class DijkstraNode(pathfinding.PathFindingNode, metaclass=abc.ABCMeta):
         return self.lowest_distance > other.lowest_distance
 
     @abc.abstractmethod
+    def __eq__(self, other) -> bool:
+        """Determine equality of 2 nodes.
+
+        Must be implemented by subclass so that every node in graph is unique.
+
+        Args:
+            other: object to compare to."""
+        pass
+
+    @abc.abstractmethod
     def __hash__(self) -> int:
         """Hash so that nodes have unique hash-id.
 
