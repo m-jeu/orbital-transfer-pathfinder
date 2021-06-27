@@ -57,11 +57,20 @@ class DijkstraEdge(pathfinding.PathFindingEdge, metaclass=abc.ABCMeta):
     """Abstract edge in graph for pathfinding with Dijkstra's algorithm.
 
     Can be used for many optimization / pathfinding problems by extending
-    a concrete class (that's supposed to function as an edge) with this one.
+    a concrete class (that's supposed to function as an edge) with this one."""
 
-    Currently, this class doesn't do much. For consistency's sake and typing in other Dijkstra's-algorithm, it's still
-    a class."""
-    pass
+    def virtual_weight(self, origin_node: DijkstraNode) -> float:
+        """Determine what total distance should be calculated for a certain node from another connected node +
+        the edge during the PathFinding algorithm execution phase. Doesn't hold any sway over the actual distance found.
+
+        In Dijkstra's algorithm, this is just the origin node's lowest distance + the edge distance.
+
+        Args:
+            origin_node: node from which target node was reached.
+
+        Returns:
+            'virtual' weight."""
+        return origin_node.lowest_distance + self.get_weight()
 
 
 class DijkstraGraph(pathfinding.PathFindingGraph):
@@ -75,7 +84,6 @@ class DijkstraGraph(pathfinding.PathFindingGraph):
 
     def find_shortest_path(self, start: DijkstraNode,
                            target: DijkstraNode,
-                           virtual_cost_per_edge: float = 0,
                            visualize: bool = False) -> tuple[float, list[DijkstraEdge]]:
         """Find the shortest path through the graph using Dijkstra's algorithm.
 
@@ -108,14 +116,14 @@ class DijkstraGraph(pathfinding.PathFindingGraph):
                 for edge in node.get_all_edges():
                     other_node = edge.get_other(node)
                     if other_node not in completed_nodes:
-                        discovered_distance = node.lowest_distance + edge.get_weight() + virtual_cost_per_edge
+                        discovered_distance = edge.virtual_weight(node)  # TODO: Consider re-implementing extra weights
                         if discovered_distance < other_node.lowest_distance:
                             other_node.lowest_distance, other_node.discovered_through = discovered_distance, edge
                             heapq.heappush(priority_queue, other_node)
                 completed_nodes.add(node)
                 if visualize: lb.increment()
 
-        # Go backwards from target to collect shortest path
+        # Go backwards from target to collect shortest path and actual path weight
         node = target
         result_path, result_weight = [target.discovered_through], target.discovered_through.get_weight()
         while (node := node.discovered_through.get_other(node)) != start:

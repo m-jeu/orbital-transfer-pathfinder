@@ -3,10 +3,10 @@ import abc
 
 import orbital_transfer_pathfinder.lib.mmath.math as mmath
 import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
-import orbital_transfer_pathfinder.lib.shortpathfinding.dijkstras_algorithm as dijkstras_algorithm
+#import orbital_transfer_pathfinder.lib.shortpathfinding.dijkstras_algorithm as dijkstras_algorithm
+import orbital_transfer_pathfinder.lib.shortpathfinding.a_star as a_star
 
-
-class BaseManoeuvre(dijkstras_algorithm.DijkstraEdge, metaclass=abc.ABCMeta):
+class BaseManoeuvre(a_star.AStarEdge, metaclass=abc.ABCMeta):
     """An abstract bidirectional 1-burn manoeuvre between 2 orbits with a certain Delta-V cost.
 
     Attributes:
@@ -46,6 +46,16 @@ class BaseManoeuvre(dijkstras_algorithm.DijkstraEdge, metaclass=abc.ABCMeta):
         Returns:
             Delta-V of this manoeuvre."""
         return self.dv
+
+    def a_star_difference_heuristic(self) -> float:
+        """Calculate a heuristic cost for this edge for use in the A* algorithm based on inclination difference,
+        apogee difference and perigee distance.
+
+        Returns:
+            weight to add to edge weight."""
+        return abs(self.orbit1.inclination - self.orbit2.inclination) + \
+               (abs(self.orbit1.apogee - self.orbit2.apogee) / 10000) + \
+               (abs(self.orbit1.perigee - self.orbit2.perigee) / 10000)
 
     @staticmethod
     @abc.abstractmethod

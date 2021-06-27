@@ -58,9 +58,9 @@ through a 200km LEO parking orbit.\n""")
 
     print(f"Find shortest path from orbits[0] to orbits[450]: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-    dijkstra_graph = shortpathfinding.dijkstras_algorithm.DijkstraGraph(list(possible_orbits.orbits))
+    dijkstra_graph = shortpathfinding.a_star.AStarGraph(list(possible_orbits.orbits))
 
-    dist, path = dijkstra_graph.find_shortest_path(leo, geo, 5, True)
+    dist, path = dijkstra_graph.find_shortest_path(leo, geo, True)
 
 
     print(f"Found shortest path: {datetime.datetime.now().strftime('%H:%M:%S')}")
