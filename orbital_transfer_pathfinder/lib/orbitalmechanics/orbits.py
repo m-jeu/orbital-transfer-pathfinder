@@ -1,4 +1,5 @@
-# To prevent circle import (for typehints) problems
+from __future__ import annotations
+
 #from typing import TYPE_CHECKING TODO: Check whether this is necesarry after implementing new features.
 #if TYPE_CHECKING:
 import orbital_transfer_pathfinder.lib.orbitalmechanics.manoeuvres as manoeuvres
@@ -46,7 +47,7 @@ class Orbit(a_star.AStarNode):
         self.central_body: bodies.CentralBody = central_body
         self.manoeuvres: set[manoeuvres.BaseManoeuvre] = set()
         if apo is not None and per is not None:  # Compute a/e from apo/per
-            if apo > per:
+            if apo > per:  # Switch around apo and per if passed perigee is greater.
                 self.apogee, self.perigee = apo, per
             else:
                 self.apogee, self.perigee = per, apo
@@ -128,3 +129,16 @@ class Orbit(a_star.AStarNode):
         Returns:
             all manoeuvres connected to this orbit."""
         return self.manoeuvres
+
+    def a_star_difference_heuristic(self, final_target: Orbit) -> float:
+        """Calculate a heuristic cost for this edge for use in the A* algorithm based on inclination difference,
+        apogee difference and perigee distance.
+
+        Args:
+            final_target: short-pathfinding target.
+
+        Returns:
+            weight to add to edge weight."""
+        return abs(self.inclination - final_target.inclination) + \
+               (abs(self.apogee - final_target.apogee) / 10000) + \
+               (abs(self.perigee - final_target.perigee) / 10000)

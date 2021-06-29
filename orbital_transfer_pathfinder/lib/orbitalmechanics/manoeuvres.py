@@ -47,16 +47,6 @@ class BaseManoeuvre(a_star.AStarEdge, metaclass=abc.ABCMeta):
             Delta-V of this manoeuvre."""
         return self.dv
 
-    def a_star_difference_heuristic(self) -> float:
-        """Calculate a heuristic cost for this edge for use in the A* algorithm based on inclination difference,
-        apogee difference and perigee distance.
-
-        Returns:
-            weight to add to edge weight."""
-        return abs(self.orbit1.inclination - self.orbit2.inclination) + \
-               (abs(self.orbit1.apogee - self.orbit2.apogee) / 10000) + \
-               (abs(self.orbit1.perigee - self.orbit2.perigee) / 10000)
-
     @staticmethod
     @abc.abstractmethod
     def evaluate(orbit1: orbits.Orbit, orbit2: orbits.Orbit) -> bool:

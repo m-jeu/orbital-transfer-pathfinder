@@ -59,7 +59,7 @@ class DijkstraEdge(pathfinding.PathFindingEdge, metaclass=abc.ABCMeta):
     Can be used for many optimization / pathfinding problems by extending
     a concrete class (that's supposed to function as an edge) with this one."""
 
-    def virtual_weight(self, origin_node: DijkstraNode) -> float:
+    def virtual_weight(self, origin_node: DijkstraNode, **kwargs) -> float:
         """Determine what total distance should be calculated for a certain node from another connected node +
         the edge during the PathFinding algorithm execution phase. Doesn't hold any sway over the actual distance found.
 
@@ -67,6 +67,9 @@ class DijkstraEdge(pathfinding.PathFindingEdge, metaclass=abc.ABCMeta):
 
         Args:
             origin_node: node from which target node was reached.
+            **kwargs:
+                any additional information used by subclasses used to compute virtual weight.
+                not used by Dijkstra, but used by (for instance) A*.
 
         Returns:
             'virtual' weight."""
@@ -116,8 +119,8 @@ class DijkstraGraph(pathfinding.PathFindingGraph):
                 for edge in node.get_all_edges():
                     other_node = edge.get_other(node)
                     if other_node not in completed_nodes:
-                        discovered_distance = edge.virtual_weight(node)  # TODO: Consider re-implementing extra weights
-                        if discovered_distance < other_node.lowest_distance:
+                        discovered_distance = edge.virtual_weight(node, target_node=target)  # Target node used by A*
+                        if discovered_distance < other_node.lowest_distance:                 # and not bij Dijkstra.
                             other_node.lowest_distance, other_node.discovered_through = discovered_distance, edge
                             heapq.heappush(priority_queue, other_node)
                 completed_nodes.add(node)

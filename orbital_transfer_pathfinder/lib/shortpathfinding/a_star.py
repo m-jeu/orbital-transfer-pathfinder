@@ -9,10 +9,18 @@ class AStarNode(dijkstras_algorithm.DijkstraNode, metaclass=abc.ABCMeta):
     """Abstract node in graph for pathfinding with the A* algorithm.
 
     Can be used for many optimization / pathfinding problems by extending
-    a concrete class (that's supposed to function as a node) with this one.
-    Currently, this class doesn't add much in terms of functionality over it's parent.
-    For consistency's sake, it's still a class."""
-    pass
+    a concrete class (that's supposed to function as a node) with this one."""
+
+    @abc.abstractmethod
+    def a_star_difference_heuristic(self, final_target: AStarNode) -> float:
+        """Abstract method that calculates a heuristic cost for this node compared to the final target.
+
+        Args:
+            final_target: short-pathfinding target.
+
+        Returns:
+            weight to add to edge weight."""
+        pass
 
 
 class AStarEdge(dijkstras_algorithm.DijkstraEdge, metaclass=abc.ABCMeta):
@@ -21,15 +29,7 @@ class AStarEdge(dijkstras_algorithm.DijkstraEdge, metaclass=abc.ABCMeta):
     Can be used for many optimization / pathfinding problems by extending
     a concrete class (that's supposed to function as an edge) with this one."""
 
-    @abc.abstractmethod
-    def a_star_difference_heuristic(self) -> float:
-        """Abstract method that calculates a heuristic cost for this edge.
-
-        Returns:
-            weight to add to edge weight."""
-        pass
-
-    def virtual_weight(self, origin_node: AStarNode) -> float:
+    def virtual_weight(self, origin_node: AStarNode, **kwargs) -> float:
         """Determine what total distance should be calculated for a certain node from another connected node +
         the edge during the PathFinding algorithm execution phase. Doesn't hold any sway over the actual distance found.
 
@@ -38,10 +38,12 @@ class AStarEdge(dijkstras_algorithm.DijkstraEdge, metaclass=abc.ABCMeta):
 
         Args:
             origin_node: node from which target node was reached.
+            **target_node(AStarNode): eventual target of AStarGraph.find_shortest_path().
 
         Returns:
             'virtual' weight."""
-        return super().virtual_weight(origin_node) + self.a_star_difference_heuristic()
+        return super().virtual_weight(origin_node) + \
+               self.get_other(origin_node).a_star_difference_heuristic(kwargs['target_node'])
 
 
 class AStarGraph(dijkstras_algorithm.DijkstraGraph, metaclass=abc.ABCMeta):
