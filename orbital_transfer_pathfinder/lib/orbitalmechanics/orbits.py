@@ -5,8 +5,7 @@ from __future__ import annotations
 import orbital_transfer_pathfinder.lib.orbitalmechanics.manoeuvres as manoeuvres
 import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
 import orbital_transfer_pathfinder.lib.mmath.math as mmath
-#import orbital_transfer_pathfinder.lib.shortpathfinding.dijkstras_algorithm as dijkstras_algorithm
-import orbital_transfer_pathfinder.lib.shortpathfinding.a_star as a_star
+import orbital_transfer_pathfinder.lib.shortpathfinding.custom_dijkstras_algorithm as custom_dijkstras_algorithm
 
 
 class KeplerElementError(Exception):
@@ -18,7 +17,7 @@ class KeplerElementError(Exception):
 in the keyword argument.""")
 
 
-class Orbit(a_star.AStarNode):
+class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
     """An orbit around a central body.
 
     Attributes:
