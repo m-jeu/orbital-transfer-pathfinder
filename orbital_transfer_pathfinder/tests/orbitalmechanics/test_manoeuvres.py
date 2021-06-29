@@ -254,7 +254,7 @@ Delta-V through speed difference of orbits using vis-viva equation and cosine-ru
                                           per=20000,
                                           i=30)
 
-        self.assertFalse(manoeuvres.InclinationAndProRetroGradeManoeuvre.evaluate(orbit_1_testcase_2,
-                                                                                  orbit_2_testcase_2),
+        self.assertFalse(manoeuvres.InclinationAndProRetroGradeManoeuvre.evaluate(orbit_1_testcase_3,
+                                                                                  orbit_2_testcase_3),
                          msg="InclinationAndProRetroGradeManoeuvre should evaluate to False for orbits that"
                              " don't share an apside.")
