@@ -39,9 +39,11 @@ together to determine min_viable_orbit_r.""")
                          "CentralBody.add_radius() should add the body's radius to passed parameter.")
 
 
-class TestCentralBodyInOrbit(TestCase):
+class TestCentralBodyInOrbit(TestCentralBody):
 
     def setUp(self):
+        super().setUp()
+
         test_orbits_central_body = bodies.CentralBody(1000000000,
                                                       1000,
                                                       0)
