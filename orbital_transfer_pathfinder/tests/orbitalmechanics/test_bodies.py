@@ -50,8 +50,8 @@ class TestCentralBodyInOrbit(TestCase):
 
         self.test_body = bodies.CentralBodyInOrbit(1000,
                                                    100,
-                                                   0,
-                                                   orbit=orbit)
+                                                   orbit,
+                                                   0)
 
     def test_constructor(self):
         self.assertAlmostEqual(self.test_body.hill_sphere_radius,
