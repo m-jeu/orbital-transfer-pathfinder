@@ -14,12 +14,12 @@ sun = bodies.CentralBody(1.989E30,
 
 earth = bodies.CentralBodyInOrbit(5.9736E24,
                                   6371000,
-                                  160000,
-                                  3.986004418E14,
                                   orbits.Orbit(sun,
                                                a=149598023000,
                                                e=0.0167086,
-                                               i=7))
+                                               i=7),
+                                  160000,
+                                  3.986004418E14)
 
 moon = bodies.CentralBodyInOrbit(7.34767309E22,
                                  1737400,
@@ -36,11 +36,11 @@ kerbol = bodies.CentralBody(1.7565459E28,
 
 kerbin = bodies.CentralBodyInOrbit(5.2915158E22,
                                    600000,
-                                   70000,
-                                   3.5316000E12,
                                    orbits.Orbit(kerbol,
                                                 apo=13599840256,
-                                                per=13599840256))
+                                                per=13599840256),
+                                   70000,
+                                   3.5316000E12)
 
 mun = bodies.CentralBodyInOrbit(9.7599066E20,
                                 200000,

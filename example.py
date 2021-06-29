@@ -19,9 +19,9 @@ earth_orbit = orbits.Orbit(sun,
 
 earth = bodies.CentralBodyInOrbit(5.9736E24,
                                   6371000,
+                                  earth_orbit,
                                   160000,
-                                  3.986004418E14,
-                                  earth_orbit)
+                                  3.986004418E14)
 
 if __name__ == "__main__":
     print("""Below are the calculations for the Delta-V cost of a simple example mission from
