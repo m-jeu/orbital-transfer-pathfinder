@@ -3,6 +3,7 @@ from unittest import TestCase
 import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
 import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
 
+
 class TestCentralBody(TestCase):
 
     def setUp(self):
@@ -81,4 +82,15 @@ radia equal to or with a maximum difference of 1 to permutations_per_sections.""
 evenly spaced between section limits.""")
 
         radia_testcase_2 = self.test_body.compute_radia(10, [1200])
+
+        below, above = 0, 0
+        for r in radia_testcase_2:
+            if r < 1200:
+                below += 1
+            else:
+                above += 1
+
+        self.assertTrue(below == 10 and above == 10,
+                        msg="When passed one section limit, CentralBodyInOrbit should compute radia below and above "
+                            "section limit.")
 
