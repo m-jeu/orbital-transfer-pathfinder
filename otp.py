@@ -34,7 +34,9 @@ if __name__ == "__main__":
     print("Pick a target orbit:")
     target_orbit = pick_from_choices(known_objects.known_orbits)
 
-
+    print("Pick precision:")
+    permutations_per_section = pick_from_choices({"Low": 5,  # For 8gb of ram.
+                                                  "High": 10})  # For 16gb of ram.
 
     print("Configuring orbits & manoeuvres.")
 
@@ -46,7 +48,7 @@ if __name__ == "__main__":
     orbits_collection.add_orbit(start_orbit)
     orbits_collection.add_orbit(target_orbit)
 
-    orbits_collection.create_orbits(10,
+    orbits_collection.create_orbits(permutations_per_section,
                                     [known_objects.earth.add_radius(150000),  # These numbers are specific to earth.
                                      known_objects.earth.add_radius(20000000)],
                                     inclination_increment=5)
