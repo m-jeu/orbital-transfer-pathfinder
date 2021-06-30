@@ -38,3 +38,7 @@ have an equal total weight otherwise.
 The extra weights will not be included in the final returned total path weight.
 
 This package is originally designed for orbital manoeuvre pathfinding, where this is quite a common occurrence.
+
+**Dependencies:**
+
+1. loadingbar package for visualising algorithm progress.
