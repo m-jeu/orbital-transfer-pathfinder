@@ -21,6 +21,7 @@ def pick_from_choices(choices: dict[str: object]) -> object:
 
 
 if __name__ == "__main__":
+    print("WARNING: Orbit generation around any other body then earth currently not implemented.")
     print("Pick a central body:")
     central_body = pick_from_choices(known_objects.celestial_bodies)
 
