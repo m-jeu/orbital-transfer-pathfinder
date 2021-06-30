@@ -10,6 +10,7 @@ import datetime
 
 
 if __name__ == "__main__":
+
     leo = orbits.Orbit(known_objects.earth, a=known_objects.earth.add_radius(200000), e=0, i=28)
     geo = orbits.Orbit(known_objects.earth, a=42164000, e=0)
 
@@ -23,6 +24,7 @@ if __name__ == "__main__":
     possible_orbits.add_orbit(leo)
     possible_orbits.add_orbit(geo)
 
+    #Create orbits at 5 attitudes in low_earth_orbit, 5 in medium_earth_orbit, and 5 in high_earth_orbit.
     possible_orbits.create_orbits(5, [known_objects.earth.add_radius(150000),
                                       known_objects.earth.add_radius(20000000)], 5)
 
