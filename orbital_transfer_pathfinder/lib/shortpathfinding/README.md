@@ -29,3 +29,12 @@ corresponding class in the file belonging to the algorithm, and implement any ab
 
 Then store the node instances in an instance of the graph class from the algorithm file, and let the
 graph.find_shortest_path() method work it's magic.
+
+**Extra information on algorithm 3:**
+
+The custom heuristic based on Dijkstra's algorithm is quite simple. It works by adding a small cost to every edge during
+the pathfinding phase, so that the algorithm will favor paths with fewer edges over ones with more when they
+have an equal total weight otherwise.
+The extra weights will not be included in the final returned total path weight.
+
+This package is originally designed for orbital manoeuvre pathfinding, where this is quite a common occurrence.
