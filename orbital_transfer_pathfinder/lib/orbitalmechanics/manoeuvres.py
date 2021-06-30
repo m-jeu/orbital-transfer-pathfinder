@@ -72,7 +72,7 @@ class BaseManoeuvre(custom_dijkstras_algorithm.CDijkstraEdge, metaclass=abc.ABCM
             equality to other object."""
         if isinstance(other, BaseManoeuvre):
             return ((self.orbit1 == other.orbit1) and (self.orbit2 == other.orbit2)) or \
-                   ((self.orbit1 == other.orbit2) and (self.orbit2 == other.orbit1))  # FIXME: Ugly conditional.
+                   ((self.orbit1 == other.orbit2) and (self.orbit2 == other.orbit1))
         return False
 
     def __hash__(self) -> int:
