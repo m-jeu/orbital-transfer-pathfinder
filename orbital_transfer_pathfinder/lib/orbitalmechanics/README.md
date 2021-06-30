@@ -8,6 +8,8 @@ inclination-changes, these will be enough. Currently, the following Keplerian el
 2. Eccentricity.
 3. Inclination.
 
+The package also assumes burns are instantanious.
+
 **Dependencies:**
 
 1. loadingbar package for visualising manoeuvre generation progress.
