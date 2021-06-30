@@ -33,6 +33,8 @@ if __name__ == "__main__":
     print("Pick a target orbit:")
     target_orbit = pick_from_choices(known_objects.known_orbits)
 
+
+
     print("Configuring orbits & manoeuvres.")
 
     orbits_collection = orbitcollections.OrbitCollection(central_body,
@@ -43,7 +45,11 @@ if __name__ == "__main__":
     orbits_collection.add_orbit(start_orbit)
     orbits_collection.add_orbit(target_orbit)
 
-    orbits_collection.create_orbits(30, inclination_increment=5)
+    orbits_collection.create_orbits(10,
+                                    [known_objects.earth.add_radius(150000),  # These numbers are specific to earth.
+                                     known_objects.earth.add_radius(20000000)],
+                                    inclination_increment=5)
+
     orbits_collection.compute_all_manoeuvres(True)
 
     print("Looking for shortest path.")
