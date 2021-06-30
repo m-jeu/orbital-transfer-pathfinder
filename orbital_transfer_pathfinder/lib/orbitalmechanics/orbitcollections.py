@@ -33,10 +33,10 @@ class OrbitCollection:
             orbit: orbit to add."""
         self.orbits.add(orbit)
         for apside in orbit.apsides:
-            if apside not in self.apside_map:  # FIXME: Switch around with else
-                self.apside_map[apside] = [orbit]
-            else:
+            if apside in self.apside_map:
                 self.apside_map[apside].append(orbit)
+            else:
+                self.apside_map[apside] = [orbit]
         if orbit.inclination in self.inclination_map:
             self.inclination_map[orbit.inclination].append(orbit)
         else:
