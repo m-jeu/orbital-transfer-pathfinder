@@ -22,6 +22,10 @@ def pick_from_choices(choices: dict[str: object]) -> object:
 
 if __name__ == "__main__":
     central_body = pick_from_choices(known_objects.celestial_bodies)
+
+    if central_body != known_objects.celestial_bodies["Earth"]:  # FIXME: Actually implement proper CLI
+        raise NotImplementedError
+
     start_orbit = pick_from_choices(known_objects.known_orbits)
     target_orbit = pick_from_choices(known_objects.known_orbits)
 
