@@ -7,7 +7,7 @@ import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
 import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
 
 
-# Solar system bodies.
+# Real world bodies.
 sun = bodies.CentralBody(1.989E30,
                          696349999,
                          mu=1.32712440018E20)
@@ -28,6 +28,34 @@ moon = bodies.CentralBodyInOrbit(7.34767309E22,
                                                     apo=405400000,
                                                     per=363228900,
                                                     i=5))
+
+# Real world orbits. Based on estimates.
+iss = orbits.Orbit(earth,
+                   per=earth.add_radius(418000),
+                   apo=earth.add_radius(422000),
+                   i=52)
+
+geo = orbits.Orbit(earth,
+                   a=42164000,
+                   e=0,
+                   i=0)
+
+ksc_standard_parking = orbits.Orbit(earth,
+                                    a=earth.add_radius(200000),
+                                    e=0,
+                                    i=28)
+
+baikonur_standard_parking = orbits.Orbit(earth,
+                                         a=earth.add_radius(200000),
+                                         e=0,
+                                         i=49)
+
+low_sun_synchronous = orbits.Orbit(earth,
+                                   a=earth.add_radius(274000),
+                                   e=0,
+                                   i=97)
+
+
 
 # Bodies in the fictional world of Kerbal Space Program.
 kerbol = bodies.CentralBody(1.7565459E28,
@@ -56,3 +84,20 @@ minmus = bodies.CentralBodyInOrbit(2.6457580E19,
                                                       a=47000000,
                                                       e=0,
                                                       i=6))
+
+
+# Convenience dictionaries for CLI.
+
+celestial_bodies = {"Sun": sun,
+                    "Earth": earth,
+                    "Moon": moon,
+                    "Kerbol": kerbol,
+                    "Kerbin": kerbin,
+                    "Mun": mun,
+                    "Minmus": minmus}
+
+known_orbits = {"ISS": iss,
+                "GEO": geo,
+                "KSC_Parking": ksc_standard_parking,
+                "Baikonur_Parking": baikonur_standard_parking,
+                "Sun_synchronous": low_sun_synchronous}
