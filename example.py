@@ -1,3 +1,9 @@
+#
+# An example script that computes and efficient flight-path from leo to geo.
+# Can easily be modified to involve other celestial bodies / orbits / settings.
+#
+
+
 import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
 import orbital_transfer_pathfinder.lib.orbitalmechanics.manoeuvres as manoeuvres
 import orbital_transfer_pathfinder.lib.orbitalmechanics.orbitcollections as orbitcollections
