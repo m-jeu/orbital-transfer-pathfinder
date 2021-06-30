@@ -21,12 +21,16 @@ def pick_from_choices(choices: dict[str: object]) -> object:
 
 
 if __name__ == "__main__":
+    print("Pick a central body:")
     central_body = pick_from_choices(known_objects.celestial_bodies)
 
     if central_body != known_objects.celestial_bodies["Earth"]:  # FIXME: Actually implement proper CLI
         raise NotImplementedError
 
+    print("Pick a start orbit:")
     start_orbit = pick_from_choices(known_objects.known_orbits)
+
+    print("Pick a target orbit:")
     target_orbit = pick_from_choices(known_objects.known_orbits)
 
     print("Configuring orbits & manoeuvres.")
