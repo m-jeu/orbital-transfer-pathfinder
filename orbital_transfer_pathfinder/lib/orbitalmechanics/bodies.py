@@ -25,7 +25,6 @@ class CentralBody:
             the standard gravitational parameter for the body in m^3 s^-2.
             """
 
-    # TODO: Consider shortening __init__ docstring because of double information with class docstring.
     def __init__(self, mass: float,
                  radius: int,
                  lowest_orbit_from_surface: int = 0,
@@ -83,7 +82,7 @@ class CentralBodyInOrbit(CentralBody):
         self.orbit = orbit
         self.hill_sphere_radius = None if orbit is None else CentralBodyInOrbit._hill_sphere(orbit, mass)
         self.max_viable_orbit_r = None if self.hill_sphere_radius is None else round(self.hill_sphere_radius / 3)
-        #                                         TODO: Current number based on wikipedia, find better source  ^
+        #                                                                    Current number based on wikipedia ^
 
     @staticmethod
     def _hill_sphere(orbit: orbits.Orbit, own_mass: float):
