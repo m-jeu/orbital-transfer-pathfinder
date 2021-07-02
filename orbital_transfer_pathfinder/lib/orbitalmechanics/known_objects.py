@@ -50,6 +50,11 @@ baikonur_standard_parking = orbits.Orbit(earth,
                                          e=0,
                                          i=49)
 
+equatorial_leo = orbits.Orbit(earth,
+                              a=earth.add_radius(200000),
+                              e=0,
+                              i=0)
+
 low_sun_synchronous = orbits.Orbit(earth,
                                    a=earth.add_radius(274000),
                                    e=0,
@@ -100,4 +105,5 @@ known_orbits = {"ISS": iss,
                 "GEO": geo,
                 "KSC_Parking": ksc_standard_parking,
                 "Baikonur_Parking": baikonur_standard_parking,
-                "Sun_synchronous": low_sun_synchronous}
+                "Sun_synchronous": low_sun_synchronous,
+                "Leo_Equatorial": equatorial_leo}
