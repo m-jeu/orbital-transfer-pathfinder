@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-#from typing import TYPE_CHECKING TODO: Check whether this is necesarry after implementing new features.
-#if TYPE_CHECKING:
 import orbital_transfer_pathfinder.lib.orbitalmechanics.manoeuvres as manoeuvres
 import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
 import orbital_transfer_pathfinder.lib.mmath.math as mmath
