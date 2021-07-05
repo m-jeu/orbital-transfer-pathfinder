@@ -129,7 +129,7 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
             all manoeuvres connected to this orbit."""
         return self.manoeuvres
 
-    def a_star_difference_heuristic(self, final_target: Orbit) -> float:  # TODO: Add test
+    def a_star_difference_heuristic(self, final_target: Orbit) -> float:
         """Calculate a heuristic cost for this edge for use in the A* algorithm based on inclination difference,
         apogee difference and perigee distance.
 
