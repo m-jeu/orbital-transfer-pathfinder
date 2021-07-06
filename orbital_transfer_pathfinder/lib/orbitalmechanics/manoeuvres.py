@@ -6,6 +6,19 @@ import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
 import orbital_transfer_pathfinder.lib.shortpathfinding.custom_dijkstras_algorithm as custom_dijkstras_algorithm
 
 
+class UnknownOriginError(Exception):
+    """Custom exception to assist the end user identify the fact that an incorrect origin was passed to
+manoeuvre.get_other()."""
+    def __init__(self, manoeuvre: BaseManoeuvre, passed_origin: orbits.Orbit):
+        """Initialize class instance.
+
+        Args:
+            manoeuvre: manoeuvre that raised the error.
+            passed_origin: the incorrect origin that was passed."""
+        super().__init__(f"""get_other() got called on {manoeuvre} with origin 
+{passed_origin} that's unknown to it.""")
+
+
 class BaseManoeuvre(custom_dijkstras_algorithm.CDijkstraEdge, metaclass=abc.ABCMeta):
     """An abstract bidirectional 1-burn manoeuvre between 2 orbits with a certain Delta-V cost.
 
@@ -38,7 +51,12 @@ class BaseManoeuvre(custom_dijkstras_algorithm.CDijkstraEdge, metaclass=abc.ABCM
 
         Args:
             origin: orbit on one 'end' of the manoeuvre, whose other side should be fetched."""
-        return self.orbit2 if origin == self.orbit1 else self.orbit1  # TODO: Consider implementing exception.
+        if origin == self.orbit1:
+            return self.orbit2
+        elif origin == self.orbit2:
+            return self.orbit1
+        else:
+            raise UnknownOriginError(self, origin)
 
     def get_weight(self) -> float:
         """Get the Delta-V of this manoeuvre as weight for pathfinding.
