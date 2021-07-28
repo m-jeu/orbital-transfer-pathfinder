@@ -25,7 +25,7 @@ if __name__ == "__main__":
     print("Pick a central body:")
     central_body = pick_from_choices(known_objects.celestial_bodies)
 
-    if central_body != known_objects.celestial_bodies["Earth"]:  # FIXME: Actually implement proper CLI
+    if central_body != known_objects.celestial_bodies["Earth"]:  # FIXME(m-jeu): Actually implement proper CLI
         raise NotImplementedError
 
     print("Pick a start orbit:")

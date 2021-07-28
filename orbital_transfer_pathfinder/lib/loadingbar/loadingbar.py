@@ -4,7 +4,7 @@ class LoadingBarError(Exception):
         super().__init__("Loading bar increments exceeded capacity.")
 
 
-#  TODO: Probably not terribly efficient, but doesn't really matter because it's just a loading bar.
+# FIXME(m-jeu): Probably not terribly efficient, but doesn't really matter because it's just a loading bar.
 class LoadingBar:
     """Simple 10-segment progress bar to visualize progress.
 

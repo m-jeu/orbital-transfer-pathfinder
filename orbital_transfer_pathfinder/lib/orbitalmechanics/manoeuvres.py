@@ -46,7 +46,7 @@ class BaseManoeuvre(custom_dijkstras_algorithm.CDijkstraEdge, metaclass=abc.ABCM
             insect_r: the attitude at which the 2 orbits intersect (and the manoeuvre is performed)."""
         pass
 
-    def get_other(self, origin: orbits.Orbit):  # TODO: Consider implementing in shortpathfinding package.
+    def get_other(self, origin: orbits.Orbit):  # TODO(m-jeu): Consider implementing in shortpathfinding package.
         """Get the orbit on the other 'end' of the manoeuvre.
 
         Args:
