@@ -24,4 +24,4 @@ def cosine_rule(v_original: float, v_target: float, angle_dif: int) -> float:
     Returns:
         the length of the velocity vector connecting the 2 ends of v_original and v_target."""
     return (((v_original ** 2) + (v_target ** 2)) -
-            (2 * v_original * v_target * math.cos(math.radians(angle_dif)))) ** (1/2)
+            (2 * v_original * v_target * math.cos(math.radians(angle_dif)))) ** 0.5
