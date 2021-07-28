@@ -12,6 +12,7 @@ def v_avg(*nums: int or float) -> float:
     return sum(nums) / len(nums)
 
 
+# FIXME(m-jeu): Replace **0.5 with math.sqrt() to improve performance slightly
 def cosine_rule(v_original: float, v_target: float, angle_dif: int) -> float:
     """Apply the cosign rule to compute the Delta-V needed to transfer from one velocity
     to another with a difference in angle.
