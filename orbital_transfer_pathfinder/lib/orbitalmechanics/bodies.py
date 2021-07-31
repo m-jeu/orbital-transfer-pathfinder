@@ -97,6 +97,9 @@ class CentralBodyInOrbit(CentralBody):
         return orbit.sm_axis * (1 - orbit.eccentricity) * \
                ((own_mass / (3 * orbit.central_body.mass)) ** (1 / 3))
 
+    # TODO(m-jeu): This could be split into 2 methods/functions:
+    # One that's more modular, that just computes several values between certain values.
+    # One that's specific to the Central Body, that calls the first method with the right numbers.
     def compute_radia(self, permutations_per_section: int, section_limits: list[int] = None) -> list[int]:
         """Compute all radia permutations that should be used in generating an amount of possible orbits around
         a body, possibly divided into several sections.
