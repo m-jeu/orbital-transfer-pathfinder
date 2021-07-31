@@ -81,7 +81,7 @@ class OrbitCollection:
         for i in list(range(0, 181, inclination_increment)) + list(self.inclination_map.keys()):
             self._create_orbits_on_one_inclination(radia, i)
 
-    def compute_all_manoeuvres(self, visualize: bool = False):
+    def compute_all_manoeuvres(self, visualize: bool = False):  # FIXME(m-jeu): Move manoeuvre computation to individual manoeuvre classes
         """Compute all possible
          manoeuvres between all orbits that share an apside.
 
