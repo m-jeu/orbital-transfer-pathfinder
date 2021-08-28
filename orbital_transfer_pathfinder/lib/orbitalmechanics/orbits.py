@@ -5,6 +5,7 @@ import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
 import orbital_transfer_pathfinder.lib.mmath.math as mmath
 import orbital_transfer_pathfinder.lib.shortpathfinding.custom_dijkstras_algorithm as custom_dijkstras_algorithm
 
+from PyAstronomy import pyasl  # FIXME(m-jeu): Absolute import instead of relative import if possible
 
 class KeplerElementError(Exception):
     """Exception to help diagnose problems related to not initializing an Orbit object with the proper parameters."""
@@ -142,3 +143,16 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
         return abs(self.inclination - final_target.inclination) + \
                (abs(self.apogee - final_target.apogee) / 10000) + \
                (abs(self.perigee - final_target.perigee) / 10000)
+
+    def to_PyAstronomy_orbit(self) -> pyasl.KeplerEllipse:
+        """Turn the orbit with all it's attributes into a Pyastronomy.pyasl KepselEllipse.
+
+        Returns:
+            The orbit as PyAstronomy.pyasl.KeplerEllipse"""
+        return pyasl.KeplerEllipse(a=self.sm_axis,
+                                   per=self.perigee,
+                                   e=self.eccentricity,
+                                   i=self.inclination,
+                                   Omega=0.0,  # Last 2 attributes assumed to be 0
+                                   w=0.0)
+
