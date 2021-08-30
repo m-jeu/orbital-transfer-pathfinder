@@ -5,6 +5,8 @@ import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
 import orbital_transfer_pathfinder.lib.mmath.math as mmath
 import orbital_transfer_pathfinder.lib.shortpathfinding.custom_dijkstras_algorithm as custom_dijkstras_algorithm
 
+import math
+
 from PyAstronomy import pyasl  # FIXME(m-jeu): Absolute import instead of relative import if possible
 
 class KeplerElementError(Exception):
@@ -27,7 +29,8 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
         apogee: the orbit's apogee in m. Should be int for transfer-calculations.
         perigee: the orbit's perigee in m. Should be int for transfer-calculations.
         apsides: apogee and perigee in 1 set, for convenience.
-        inclination: the orbit's inclination in degrees from 0 to 180 (inclusive)."""
+        inclination: the orbit's inclination in degrees from 0 to 180 (inclusive).
+        period: the orbital period in seconds."""
 
     def __init__(self, central_body: bodies.CentralBody,
                  a: int = None, e: float = None,
@@ -57,6 +60,7 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
             raise KeplerElementError()
         self.inclination: int = i
         self.apsides: set[int] = {self.apogee, self.perigee}
+        self.period = Orbit._orbital_period(self.sm_axis, self.central_body.mu)
 
     @staticmethod
     def _apo_and_per(a: int or float, e: float) -> tuple[float, float]:
@@ -85,6 +89,18 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
                 0: orbit semi-major axis in m.
                 1: orbit eccentricity."""
         return mmath.v_avg(apo, per), 1 - (2 / ((apo / per) + 1))
+
+    @staticmethod
+    def _orbital_period(a: int or float, parent_mu: float) -> float:
+        """Compute the orbital period of a given orbit in seconds.
+
+        Args:
+            a: the orbit's semi-major axis in m.
+            parent_mu: the parent body's standard gravitational parameter in m^3 s^-2.
+
+        Returns:
+            the orbital period in seconds."""
+        return math.tau * math.sqrt((a ** 3) / parent_mu)
 
     def v_at(self, r) -> float:
         """Compute the speed relative to the central body at a certain point in the orbit.
@@ -150,7 +166,7 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
         Returns:
             The orbit as PyAstronomy.pyasl.KeplerEllipse"""
         return pyasl.KeplerEllipse(a=self.sm_axis,
-                                   per=self.perigee,  # FIXME(m-jeu): Per = period and not periapsis!!!
+                                   per=self.period,
                                    e=self.eccentricity,
                                    i=self.inclination,
                                    Omega=0.0,  # Last 2 attributes assumed to be 0
