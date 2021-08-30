@@ -150,9 +150,8 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
         Returns:
             The orbit as PyAstronomy.pyasl.KeplerEllipse"""
         return pyasl.KeplerEllipse(a=self.sm_axis,
-                                   per=self.perigee,
+                                   per=self.perigee,  # FIXME(m-jeu): Per = period and not periapsis!!!
                                    e=self.eccentricity,
                                    i=self.inclination,
                                    Omega=0.0,  # Last 2 attributes assumed to be 0
                                    w=0.0)
-
