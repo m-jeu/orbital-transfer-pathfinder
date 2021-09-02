@@ -23,7 +23,7 @@ class TestBaseManoeuvre(TestCase):
 
     # Actual tests
     def setUp(self):
-        self.central_body = bodies.CentralBody(0, 0, 0, 0)
+        self.central_body = bodies.CentralBody(1000, 0, 0)
         self.orbit1 = orbits.Orbit(self.central_body, apo=1000, per=1000)
         self.orbit2 = orbits.Orbit(self.central_body, apo=2000, per=2000)
 
