@@ -101,7 +101,7 @@ class BaseManoeuvre(custom_dijkstras_algorithm.CDijkstraEdge, metaclass=abc.ABCM
         return hash((self.orbit1, self.orbit2))
 
     def __str__(self) -> str:
-        return f"{self.dv}m/s between {self.orbit1} and {self.orbit2}."
+        return f"{self.dv}m/s."
 
     def __repr__(self) -> str:
         return self.__str__()
