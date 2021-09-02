@@ -125,11 +125,17 @@ class TestCDijkstraGraph(TestCase):
                                                                 test_node_end,
                                                                 test_node_start])
 
-        dist, path = test_graph.find_shortest_path(test_node_start, test_node_end)
+        dist, edges, nodes = test_graph.find_shortest_path(test_node_start, test_node_end)
 
-        self.assertEqual(path, [edge_long],
+        self.assertEqual(edges, [edge_long],
                          msg="CDijkstraGraph.find_shortest_path() should compute shortest path, favoring paths"
-                             "of equal weight that have less nodes.")
+                             "of equal weight that have less nodes and returning traversed edges at index 1 in returned"
+                             "tuple.")
+
+        self.assertEqual(nodes, [test_node_start, test_node_end],
+                         msg="CDijkstraGraph.find_shortest_path() should compute shortest path, favoring paths"
+                             "of equal weight that have less nodes and returning traversed nodes at index 2 in returned"
+                             "tuple.")
 
         self.assertEqual(dist, 99, msg="CDijkstraGraph.find_shortest_path() should not include custom heuristic weight"
                                        " in final computed weight.")

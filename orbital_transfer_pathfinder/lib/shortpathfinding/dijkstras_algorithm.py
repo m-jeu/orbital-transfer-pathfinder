@@ -102,7 +102,8 @@ class DijkstraGraph(pathfinding.PathFindingGraph):
         Returns:
             tuple that contains:
                 0: the total weight of the shortest path.
-                1: list containing every step of the shortest path, in order."""
+                1: list containing every step of the shortest path, in order.
+                2: list containing every node traversed in the order they were traversed in"""
 
         # Setup
         lb = loadingbar.LoadingBar(len(self.nodes)) if visualize else None
@@ -126,11 +127,15 @@ class DijkstraGraph(pathfinding.PathFindingGraph):
                 completed_nodes.add(node)
                 if visualize: lb.increment()
 
-        # Go backwards from target to collect shortest path and actual path weight
         node = target
-        result_path, result_weight = [target.discovered_through], target.discovered_through.get_weight()
+        traversed_nodes = [target]
+        traversed_edges = [target.discovered_through]
+        result_weight = target.discovered_through.get_weight()
         while (node := node.discovered_through.get_other(node)) != start:
-            result_path.append(node.discovered_through)
+            traversed_nodes.append(node)
+            traversed_edges.append(node.discovered_through)
             result_weight += node.discovered_through.get_weight()
+        traversed_nodes.append(start)
         self._reset_nodes()
-        return result_weight, result_path[::-1]
+        return result_weight, traversed_edges[::-1], traversed_nodes[::-1]
+

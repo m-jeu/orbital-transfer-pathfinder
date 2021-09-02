@@ -3,6 +3,8 @@ import orbital_transfer_pathfinder.lib.orbitalmechanics.orbitcollections as orbi
 import orbital_transfer_pathfinder.lib.orbitalmechanics.manoeuvres as manoeuvres
 import orbital_transfer_pathfinder.lib.shortpathfinding.custom_dijkstras_algorithm as custom_dijkstras_algorithm
 
+import orbital_transfer_pathfinder.lib.orbitalmechanics.visualization as visualization
+
 
 def pick_from_choices(choices: dict[str: object]) -> object:
     """Make a user pick an option out of a dictionary with strings as keys through keyboard input.
@@ -59,12 +61,16 @@ if __name__ == "__main__":
 
     graph = custom_dijkstras_algorithm.CDijkstraGraph(list(orbits_collection.orbits))
 
-    distance, path = graph.find_shortest_path(start_orbit, target_orbit, True)
+    distance, path, nodes = graph.find_shortest_path(start_orbit, target_orbit, True)
 
     print(f"\nFound plan for {distance} m/s Delta-V:")
     print(f"Start: {start_orbit}.")
     print(f"Target: {target_orbit}.")
     print("Path:")
-    for manoeuvre in path:
-        print(f"  {manoeuvre}.")
+    for i in range(len(path)):
+        print(nodes[i])
+        print(path[i])
+    print(nodes[-1])
+
+    visualization.visualize_orbits(nodes)
 

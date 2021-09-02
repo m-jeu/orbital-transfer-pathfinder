@@ -127,11 +127,15 @@ class TestAStarGraph(TestCase):
                                         test_node_end,
                                         test_node_start])
 
-        dist, path = test_graph.find_shortest_path(test_node_start, test_node_end)
+        dist, edges, nodes = test_graph.find_shortest_path(test_node_start, test_node_end)
 
-        self.assertEqual(path, [edge_long],
+        self.assertEqual(edges, [edge_long],
                          msg="AStarGraph.find_shortest_path() should compute shortest path using the actual weights +"
-                             " heuristic weights.")
+                             " heuristic weights, and return traversed edges at index 1 in returned tuple.")
+
+        self.assertEqual(nodes, [test_node_start, test_node_end],
+                         msg="AStarGraph.find_shortest_path() should compute shortest path using the actual weights +"
+                             " heuristic weights, and return traversed nodes at index 2 in returned tuple.")
 
         self.assertEqual(dist, 10, msg="AStarGraph.find_shortest_path() should not include heuristic weights in final"
                                        " path length.")

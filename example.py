@@ -12,6 +12,8 @@ import orbital_transfer_pathfinder.lib.orbitalmechanics.known_objects as known_o
 
 import orbital_transfer_pathfinder.lib.shortpathfinding as shortpathfinding
 
+import orbital_transfer_pathfinder.lib.orbitalmechanics.visualization as visualization
+
 import datetime
 
 
@@ -44,12 +46,16 @@ if __name__ == "__main__":
 
     dijkstra_graph = shortpathfinding.custom_dijkstras_algorithm.CDijkstraGraph(list(possible_orbits.orbits))
 
-    dist, path = dijkstra_graph.find_shortest_path(leo, geo, True)
+    dist, res_manoeuvres, res_orbits = dijkstra_graph.find_shortest_path(leo, geo, True)
 
 
     print(f"Found shortest path: {datetime.datetime.now().strftime('%H:%M:%S')}")
     print(f"Distance: {dist} m/s Delta-V")
     print(f"Start: {leo}")
     print(f"Target: {geo}")
-    for m in path:
-        print(m)
+    for i in range(len(res_orbits)):
+        print(res_orbits[i])
+        if i < len(res_manoeuvres):
+            print(res_manoeuvres[i])
+
+    visualization.visualize_orbits(res_orbits)

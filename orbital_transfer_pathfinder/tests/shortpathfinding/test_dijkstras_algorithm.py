@@ -125,9 +125,14 @@ class TestDijkstraGraph(TestCase):
                                                         test_node_end,
                                                         test_node_start])
 
-        dist, path = test_graph.find_shortest_path(test_node_start, test_node_end)
+        dist, edges, nodes = test_graph.find_shortest_path(test_node_start, test_node_end)
 
         self.assertEqual(dist, 9, msg="DijkstraGraph.find_shortest_path() should always converge on shortest path.")
 
-        self.assertEqual(path, [edge_short_1, edge_short_2, edge_short_3],
-                         msg="DijkstraGraph.find_shortest_path() should always converge on shortest path.")
+        self.assertEqual(edges, [edge_short_1, edge_short_2, edge_short_3],
+                         msg="DijkstraGraph.find_shortest_path() should always converge on shortest path and return"
+                             " traversed edges in returned tuple at index 1.")
+
+        self.assertEqual(nodes, [test_node_start, test_node_inbetween_1, test_node_inbetween_2, test_node_end],
+                         msg="DijkstraGraph.find_shortest_path() should always converge on shortest path and return"
+                             " traversed nodes in returned tuple at index 2.")
