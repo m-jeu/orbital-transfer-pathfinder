@@ -14,3 +14,6 @@ The package also assumes burns are instantanious.
 
 1. loadingbar package for visualising manoeuvre generation progress.
 2. shortpathfinding package for actually finding efficient flight-plans.
+3. numpy for visualization
+4. matplotlib for visualization
+5. PyAstronomy for visualization
