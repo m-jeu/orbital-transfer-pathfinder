@@ -113,7 +113,7 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
         return (self.central_body.mu * ((2 / r) - (1 / self.sm_axis))) ** 0.5
 
     def __str__(self) -> str:
-        return f"(Orbit: a={self.apogee}m p={self.perigee}m i={self.inclination} degrees)"
+        return f"Orbit: a={self.apogee}m p={self.perigee}m i={self.inclination} degrees."
 
     def __repr__(self) -> str:
         return self.__str__()
