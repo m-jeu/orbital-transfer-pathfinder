@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-import orbital_transfer_pathfinder.lib.mmath.math as mmath
+import orbital_transfer_pathfinder.lib.mmath.mmath as mmath
 
 
 class Test(TestCase):

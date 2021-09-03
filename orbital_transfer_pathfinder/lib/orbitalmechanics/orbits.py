@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import orbital_transfer_pathfinder.lib.orbitalmechanics.manoeuvres as manoeuvres
 import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
-import orbital_transfer_pathfinder.lib.mmath.math as mmath
+import orbital_transfer_pathfinder.lib.mmath.mmath as mmath
 import orbital_transfer_pathfinder.lib.shortpathfinding.custom_dijkstras_algorithm as custom_dijkstras_algorithm
 
 import math
