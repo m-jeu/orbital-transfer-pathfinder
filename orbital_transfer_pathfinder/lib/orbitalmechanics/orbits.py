@@ -110,7 +110,7 @@ class Orbit(custom_dijkstras_algorithm.CDijkstraNode):
 
         Returns:
             The speed relative to the central body at the specified attitude in m s^-1."""
-        return (self.central_body.mu * ((2 / r) - (1 / self.sm_axis))) ** 0.5
+        return math.sqrt(self.central_body.mu * ((2 / r) - (1 / self.sm_axis)))
 
     def __str__(self) -> str:
         return f"Orbit: a={self.apogee}m p={self.perigee}m i={self.inclination} degrees."
