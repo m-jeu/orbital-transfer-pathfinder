@@ -3,8 +3,7 @@
 # to make life easier for the end user.
 #
 
-import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
-import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
+from ..orbitalmechanics import bodies, orbits
 
 
 # Real world bodies.

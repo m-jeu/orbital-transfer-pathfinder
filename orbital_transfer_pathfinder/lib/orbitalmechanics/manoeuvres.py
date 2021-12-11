@@ -1,9 +1,9 @@
 from __future__ import annotations
 import abc
 
-import orbital_transfer_pathfinder.lib.mmath.mmath as mmath
-import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
-import orbital_transfer_pathfinder.lib.shortpathfinding.custom_dijkstras_algorithm as custom_dijkstras_algorithm
+from ..orbitalmechanics import orbits
+from ..mmath import mmath
+from ..shortpathfinding import custom_dijkstras_algorithm
 
 
 class UnknownOriginError(Exception):

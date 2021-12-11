@@ -1,7 +1,5 @@
-import orbital_transfer_pathfinder.lib.orbitalmechanics.bodies as bodies
-import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
-
-import orbital_transfer_pathfinder.lib.loadingbar.loadingbar as loadingbar
+from ..orbitalmechanics import bodies, orbits
+from ..loadingbar import loadingbar
 
 
 class OrbitCollection:

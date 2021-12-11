@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 
-import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
+from ..orbitalmechanics import orbits
 
 
 GRAVITATIONAL_CONSTANT = 6.67430E-11  # kg^-1 m^3 s^-2

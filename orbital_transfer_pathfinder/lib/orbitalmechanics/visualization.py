@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib  # For typing
 
-import orbital_transfer_pathfinder.lib.orbitalmechanics.orbits as orbits
+from ..orbitalmechanics import orbits
 
 
 def orbit_names(n: int) -> list[str]:
