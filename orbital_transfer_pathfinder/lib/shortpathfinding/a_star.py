@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import abc
 
-import orbital_transfer_pathfinder.lib.shortpathfinding.dijkstras_algorithm as dijkstras_algorithm
+from ..shortpathfinding import dijkstras_algorithm
 
 
 class AStarNode(dijkstras_algorithm.DijkstraNode, metaclass=abc.ABCMeta):

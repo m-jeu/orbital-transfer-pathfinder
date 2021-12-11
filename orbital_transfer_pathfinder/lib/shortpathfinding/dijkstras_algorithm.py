@@ -3,8 +3,8 @@ from __future__ import annotations
 import abc
 import heapq
 
-import orbital_transfer_pathfinder.lib.shortpathfinding.pathfinding as pathfinding
-import orbital_transfer_pathfinder.lib.loadingbar.loadingbar as loadingbar
+from ..shortpathfinding import pathfinding
+from ..loadingbar import loadingbar
 
 
 class DijkstraNode(pathfinding.PathFindingNode, metaclass=abc.ABCMeta):
